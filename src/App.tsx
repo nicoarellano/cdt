@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import { Mapbox } from "./components/Mapbox";
+import { RightBarButton } from "./components/right-bar-button";
+import { TopBar } from "./components/topBar";
+import { IcdtLogo } from "./components/icdt-logo";
+import { SearchButton } from "./components/search-button";
+
+const mapboxAccessToken =
+  "pk.eyJ1Ijoibmljby1hcmVsbGFubyIsImEiOiJjbDU2bTA3cmkxa3JzM2luejI2dnd3bzJsIn0.lKKSghBtWMQdXszpTJN32Q";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <TopBar>
+        <div id="top-left" className="row">
+          <IcdtLogo />
+          <SearchButton />
+        </div>
+        <RightBarButton />
+      </TopBar>
+
+      <div id="top-gradient"></div>
+      <Mapbox mapboxAccessToken={mapboxAccessToken} />
+    </>
   );
 }
 
