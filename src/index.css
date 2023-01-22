@@ -53,19 +53,18 @@ body {
     position: absolute;
     width: 100%;
     height: 7rem;
-    background-image: linear-gradient(180deg, black, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(180deg, black, rgba(0, 0, 0, 0));
 }
 
-#top-container {
+#top-bar {
     display: flex;
     padding: 1.5rem;
-    z-index: 5;
+    z-index: 2;
     position: absolute;
     width: 100%;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start
 }
-
 
 .selectors {
     display: flex;
@@ -148,6 +147,23 @@ body {
 .all-pointer-events {
     pointer-events: all;
     cursor: pointer;
+}
+
+.right-menu {
+    z-index: 2;
+    position: absolute;
+    display: flex;
+    background-color: var(--dark-transparent);
+    padding: 1rem 0.2rem;
+    top: 0px;
+    right: 0px;
+    height: 100vh;
+    align-items: flex-end;
+    flex-direction: column;
+    font-weight: 300;
+    font-size: 0.7rem;
+    color: var(--primary-light);
+    pointer-events: all;
 }
 
 .hidden {
