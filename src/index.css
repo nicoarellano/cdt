@@ -12,6 +12,7 @@
     --secondary-color: #8c8c8c;
     --secondary-transp1: #8c8c8cee;
     --icdt-color: #73CEE2;
+    --selected-button: #93B9E2;
     --shadow: 0.4rem 0.4rem 0.6rem #00000040;
     --darker-shadow: 0.3rem 0.3rem 0.3rem #000000aa;
     --blur: blur(3px);
@@ -53,17 +54,17 @@ body {
     position: absolute;
     width: 100%;
     height: 7rem;
-    background-image: linear-gradient(180deg, black, rgba(0, 0, 0, 0));
+    background-image: linear-gradient(180deg, black, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
 }
 
 #top-bar {
     display: flex;
-    padding: 1.5rem;
+    padding: 1.3rem 0.2rem 1.3rem 1.3rem;
     z-index: 2;
     position: absolute;
     width: 100%;
     flex-direction: row;
-    justify-content: flex-start
+    justify-content: space-between;
 }
 
 .selectors {
@@ -103,18 +104,13 @@ body {
 }
 
 .white-icon svg {
-    transition: all 0.3s ease 0s;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    width: fit-content;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
     fill: var(--primary-light);
-    stroke: rgba(0, 0, 0, 0.3);
-    stroke-width: 1px;
-    stroke-linejoin: round;
     pointer-events: all;
+    transition: all 0.3s ease 0s;
 }
 
 .white-icon:hover>svg {
@@ -122,8 +118,20 @@ body {
     scale: 1.05;
 }
 
+.animate {
+    transform: translate(0, 4rem);
+    opacity: 0;
+    transition: all 0.3s ease 0s;
+}
+
+.selected-button>svg {
+    fill: var(--selected-button);
+    scale: 1.025;
+}
+
 .icon:hover {
     scale: 1.05;
+    transition: all 0.3s ease 0s;
 }
 
 .row {
@@ -150,11 +158,11 @@ body {
 }
 
 .right-menu {
-    z-index: 2;
+    z-index: 1;
     position: absolute;
     display: flex;
     background-color: var(--dark-transparent);
-    padding: 1rem 0.2rem;
+    padding: 6rem 0.2rem;
     top: 0px;
     right: 0px;
     height: 100vh;
@@ -164,9 +172,42 @@ body {
     font-size: 0.7rem;
     color: var(--primary-light);
     pointer-events: all;
+    overflow: auto;
+}
+
+.mapboxgl-ctrl-bottom-right {
+    visibility: collapse;
+}
+
+.full-page-iframe {
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    background-color: #888;
 }
 
 .hidden {
     display: none;
     pointer-events: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

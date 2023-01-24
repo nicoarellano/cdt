@@ -26,7 +26,6 @@ export const Mapbox: FC<{ mapboxAccessToken: string }> = (props) => {
   const { mapboxAccessToken } = props;
   return (
     <>
-      <div id="top-gradient"></div>
       <Map
         initialViewState={{
           latitude: 56.415,

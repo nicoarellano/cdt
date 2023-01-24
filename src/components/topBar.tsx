@@ -3,8 +3,8 @@ import { FC, PropsWithChildren } from "react";
 export const TopBar: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <div id="top-gradient"></div>
       <header>
+        <div id="top-gradient"></div>
         <nav id="top-bar" className="top-bar">
           {children}
         </nav>

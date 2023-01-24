@@ -1,15 +1,17 @@
+import MenuIcon from "@mui/icons-material/Menu";
+import { useState } from "react";
+
 export const RightBarButton = () => {
+  const [buttonState, setButtonState] = useState(false);
+  const [currentClass, setcurrentClass] = useState("white-icon");
+  const onClick = () => {
+    setcurrentClass(buttonState ? "white-icon" : "white-icon selected-button");
+    setButtonState(!buttonState);
+  };
+
   return (
-    <>
-      <div
-        id="right-menu-button"
-        className="white-icon right-menu-button"
-        title="Show side menu"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
-        </svg>
-      </div>
-    </>
+    <div id="right-menu-button" title="Side menu" className={currentClass}>
+      <MenuIcon onClick={onClick} />
+    </div>
   );
 };
