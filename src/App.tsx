@@ -10,13 +10,6 @@ const mapboxAccessToken =
   "pk.eyJ1Ijoibmljby1hcmVsbGFubyIsImEiOiJjbDU2bTA3cmkxa3JzM2luejI2dnd3bzJsIn0.lKKSghBtWMQdXszpTJN32Q";
 
 function App() {
-  // const [buttonState, setButtonState] = useState(false);
-  // const [currentClass, setcurrentClass] = useState("white-icon");
-  // const onClick = () => {
-  //   // setcurrentClass(buttonState ? "white-icon" : "white-icon selected-button");
-  //   // setcurrentClass(buttonState ? "white-icon" : "animate");
-  //   setButtonState(!buttonState);
-  // };
   return (
     <>
       <TopBar>
@@ -27,16 +20,6 @@ function App() {
         <RightBarButton />
       </TopBar>
       <RightMenu />
-      {/* <RightMenu newClass={currentClass}>
-        <ToolsButton />
-        <LayersButton />
-        <ShareViewButton />
-        <MapStylesButton />
-        <LoginButton />
-        <InfoButton />
-        <SettingsButton />
-        <TorontoPkgsApi />
-      </RightMenu> */}
       <Mapbox mapboxAccessToken={mapboxAccessToken} />
       <BimViewer />
     </>

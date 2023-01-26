@@ -3,11 +3,11 @@ import { FC, PropsWithChildren } from "react";
 import { ToolsButton } from "./tools-button";
 import { LayersButton } from "./layers-button";
 import { ShareViewButton } from "./share-view-button";
+import { UploadButton } from "./upload-button";
 import { MapStylesButton } from "./map-styles-button";
 import { LoginButton } from "./login-button";
 import { InfoButton } from "./info-button";
 import { SettingsButton } from "./settings-button";
-import { TorontoPkgsApi } from "./toronto-packages-api";
 
 export const RightMenu: FC<PropsWithChildren> = ({ children }) => {
   // const [navVisibility, setNavVisibility] = useState(true);
@@ -33,11 +33,12 @@ export const RightMenu: FC<PropsWithChildren> = ({ children }) => {
           <ToolsButton />
           <LayersButton />
           <ShareViewButton />
+          <UploadButton />
           <MapStylesButton />
           <LoginButton />
           <InfoButton />
           <SettingsButton />
-          <TorontoPkgsApi />
+          {/* <TorontoBikes /> */}
           {/* <RightBarButton showList={handleClick} />
           {navVisibility &&
             navList.map((list, index) => {

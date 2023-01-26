@@ -179,6 +179,15 @@ body {
     visibility: collapse;
 }
 
+.place-icon>svg {
+    cursor: pointer;
+    display: flex;
+    width: 1.8rem;
+    height: 1.8rem;
+    fill: var(--primary-light);
+    pointer-events: all;
+}
+
 .full-page-iframe {
     z-index: 2;
     width: 100vw;

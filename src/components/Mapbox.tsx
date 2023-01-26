@@ -11,6 +11,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import GeocoderControl from "./geocoder-control";
 
 import type { SkyLayer } from "react-map-gl";
+import { TorontoBikesMarkers } from "./toronto-bikes-markers";
+import { TorontoLitterMarkers } from "./toronto-litter-markers";
 
 const skyLayer: SkyLayer = {
   id: "sky",
@@ -56,6 +58,8 @@ export const Mapbox: FC<{ mapboxAccessToken: string }> = (props) => {
           mapboxAccessToken={mapboxAccessToken}
           position="top-left"
         />
+        <TorontoBikesMarkers />
+        <TorontoLitterMarkers />
       </Map>
     </>
   );
