@@ -10,41 +10,21 @@ import { InfoButton } from "./info-button";
 import { SettingsButton } from "./settings-button";
 
 export const RightMenu: FC<PropsWithChildren> = ({ children }) => {
-  // const [navVisibility, setNavVisibility] = useState(true);
-
-  // function handleClick() {
-  //   setNavVisibility(!navVisibility);
-  // }
-
-  // const navList = [
-  //   "Tools",
-  //   "Layers",
-  //   "Share View",
-  //   "Map Styles",
-  //   "Login",
-  //   "Info",
-  //   "Settings",
-  // ];
-
   return (
     <>
       <aside>
-        <nav id="right-menu" className={`right-menu`}>
-          <ToolsButton />
-          <LayersButton />
-          <ShareViewButton />
-          <UploadButton />
-          <MapStylesButton />
-          <LoginButton />
-          <InfoButton />
-          <SettingsButton />
-          {/* <TorontoBikes /> */}
-          {/* <RightBarButton showList={handleClick} />
-          {navVisibility &&
-            navList.map((list, index) => {
-              return <NavButton id={index} name={list} />;
-            })} */}
-          {/* <RightBarButton /> */}
+        <nav id="right-menu">
+          <nav id="right-menu-container" className={"column"}></nav>
+          <nav id="right-menu-buttons" className="column">
+            <ToolsButton />
+            <LayersButton />
+            <ShareViewButton />
+            <UploadButton />
+            <MapStylesButton />
+            <LoginButton />
+            <InfoButton />
+            <SettingsButton />
+          </nav>
           {children}
         </nav>
       </aside>
