@@ -6,8 +6,7 @@ import { SearchButton } from "./components/search-button";
 import { RightMenu } from "./components/right-menu";
 import { BimViewer } from "./components/bim-viewer";
 
-const mapboxAccessToken =
-  "pk.eyJ1Ijoibmljby1hcmVsbGFubyIsImEiOiJjbDU2bTA3cmkxa3JzM2luejI2dnd3bzJsIn0.lKKSghBtWMQdXszpTJN32Q";
+const token = process.env.REACT_APP_MAPBOX_TOKEN;
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
         <RightBarButton />
       </TopBar>
       <RightMenu />
-      <Mapbox mapboxAccessToken={mapboxAccessToken} />
+      <Mapbox mapboxAccessToken={token} />
       <BimViewer />
     </>
   );

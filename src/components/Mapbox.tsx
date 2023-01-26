@@ -24,7 +24,7 @@ const skyLayer: SkyLayer = {
   },
 };
 
-export const Mapbox: FC<{ mapboxAccessToken: string }> = (props) => {
+export const Mapbox: FC<{ mapboxAccessToken: any }> = (props) => {
   const { mapboxAccessToken } = props;
   return (
     <>
