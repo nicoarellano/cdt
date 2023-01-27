@@ -1,9 +1,9 @@
 import { Mapbox } from "./components/Mapbox";
-import { RightBarButton } from "./components/right-bar-button";
+import { RightMenuButton } from "./components/right-menu-button";
 import { TopBar } from "./components/topBar";
 import { IcdtLogo } from "./components/icdt-logo";
-import { SearchButton } from "./components/search-button";
-import { RightMenu } from "./components/right-menu";
+// import { SearchButton } from "./components/search-button";
+import { RightMenuContainer } from "./components/right-menu-container";
 import { BimViewer } from "./components/bim-viewer";
 
 const token = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -14,11 +14,11 @@ function App() {
       <TopBar>
         <div id="top-left" className="row">
           <IcdtLogo />
-          <SearchButton />
+          {/* <SearchButton /> */}
         </div>
-        <RightBarButton />
+        <RightMenuButton />
       </TopBar>
-      <RightMenu />
+      <RightMenuContainer />
       <Mapbox mapboxAccessToken={token} />
       <BimViewer />
     </>
