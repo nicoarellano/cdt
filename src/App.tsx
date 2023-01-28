@@ -1,5 +1,5 @@
 import { Mapbox } from "./components/Mapbox";
-import { RightMenuButton } from "./components/right-menu-button";
+// import { RightMenuButton } from "./components/right-menu-button";
 import { TopBar } from "./components/topBar";
 import { IcdtLogo } from "./components/icdt-logo";
 // import { SearchButton } from "./components/search-button";
@@ -16,7 +16,7 @@ function App() {
           <IcdtLogo />
           {/* <SearchButton /> */}
         </div>
-        <RightMenuButton />
+        {/* <RightMenuButton /> */}
       </TopBar>
       <RightMenuContainer />
       <Mapbox mapboxAccessToken={token} />

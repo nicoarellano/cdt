@@ -1,4 +1,5 @@
 import { useApi } from "../utils/useApi";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 export const TorontoPkgsApi = () => {
   const results = useApi(
@@ -6,19 +7,18 @@ export const TorontoPkgsApi = () => {
   );
 
   return (
-    <div>
-      <select>
-        {Boolean(results.length) &&
-          results.map((result, index) => {
-            const key = `${result}${index}`;
-            return <option key={key}>{result}</option>;
-          })}
-      </select>
+    <div className="hidden">
+      <h3>Data</h3>
       <ul>
         {Boolean(results.length) &&
           results.map((result, index) => {
             const key = `${result}${index}`;
-            return <li key={key}>{result}</li>;
+            return (
+              <li key={key} className="row space-between" title="Add">
+                <h4>{result}</h4>
+                <AddRoundedIcon />
+              </li>
+            );
           })}
       </ul>
     </div>

@@ -1,8 +1,8 @@
-import { RightBarButton } from "./right-bar-button";
+import { RightMenuButton } from "./right-menu-button";
 import { TopBar } from "./topBar";
 import { IcdtLogo } from "./icdt-logo";
 import { SearchButton } from "./search-button";
-import { RightMenu } from "./right-menu";
+import { RightMenuContainer } from "./right-menu-container";
 import { ToolsButton } from "./tools-button";
 import { LayersButton } from "./layers-button";
 import { ShareViewButton } from "./share-view-button";
@@ -18,15 +18,15 @@ export const BimViewer = () => {
           <SearchButton />
         </div>
       </TopBar>
-      <RightMenu>
-        <RightBarButton />
+      <RightMenuContainer>
+        <RightMenuButton />
         <br />
         <ToolsButton />
         <LayersButton />
         <ShareViewButton />
         <InfoButton />
         <SettingsButton />
-      </RightMenu>
+      </RightMenuContainer>
     </div>
   );
 };
