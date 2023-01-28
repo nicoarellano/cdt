@@ -29,16 +29,27 @@ h2 {
     line-height: 38px;
 }
 
+
+
 h3 {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 20px;
+}
+
+.effect:hover {
+    font-weight: 800;
+    scale: 1.015;
 }
 
 h4 {
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
+}
+
+.effect h4 {
+    font-weight: 500;
 }
 
 ::-webkit-scrollbar {
@@ -77,13 +88,78 @@ h4 {
 }
 
 #top-bar {
-    display: flex;
-    padding: 1.3rem 0rem 1.3rem 1.3rem;
     z-index: 4;
+    display: flex;
     position: absolute;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+}
+
+#right-container {
+    z-index: 5;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    top: 0px;
+    right: 0px;
+    height: 100vh;
+    pointer-events: all;
+}
+
+#right-menu-button {
+    padding-top: 1.2rem;
+    padding-right: 0.7rem;
+}
+
+#right-box {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    padding: 1.5rem 1rem;
+    display: flex;
+    height: 100vh;
+    right: 0px;
+    background-color: var(--dark-transparent);
+    padding-top: 1.5rem;
+    width: fit-content;
+    align-items: flex-start;
+    flex-direction: column;
+    color: var(--primary-light);
+    overflow: hidden;
+    padding: 1.2;
+}
+
+#right-menu-buttons {
+    display: flex;
+    gap: 1.5rem;
+    padding-top: 3rem;
+    padding-right: 1.2rem;
+    flex-direction: column;
+}
+
+#right-menu {
+    width: fit-content;
+    height: fit-content;
+    padding-top: 1.2rem;
+    top: 0px;
+    padding-right: 2rem;
+    flex-direction: column;
+}
+
+#right-menu-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#right-menu-content {
+    overflow-y: auto;
+    padding: 3.5rem 5rem 0 0;
+    height: calc(88vh)
 }
 
 .mapboxgl-map {
@@ -94,23 +170,26 @@ h4 {
     pointer-events: all;
 }
 
-.white-icon {
-    padding: 1.2rem;
+.icon {
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    pointer-events: all;
 }
 
-.white-icon svg {
-    cursor: pointer;
-    display: flex;
+.icon svg {
+    fill: var(--primary-light);
     width: 1.8rem;
     height: 1.8rem;
-    fill: var(--primary-light);
-    pointer-events: all;
+}
+
+.icon:hover {
+    scale: 1.03;
     transition: all 0.3s ease 0s;
 }
 
-.white-icon:hover>svg {
+.icon:hover>svg {
     fill: var(--icdt-color);
-    scale: 1.05;
+    scale: 1.03;
 }
 
 .animate {
@@ -121,13 +200,9 @@ h4 {
 
 .selected-button>svg {
     fill: var(--selected-button);
-    scale: 1.025;
+    scale: 1.02;
 }
 
-.icon:hover {
-    scale: 1.05;
-    transition: all 0.3s ease 0s;
-}
 
 .row {
     display: flex;
@@ -145,7 +220,7 @@ h4 {
 }
 
 .mapboxgl-ctrl-top-left {
-    margin: 1.7rem 8.2rem;
+    margin: 1.2rem 6rem;
 }
 
 .all-pointer-events {
@@ -153,51 +228,15 @@ h4 {
     cursor: pointer;
 }
 
-#right-menu-container {
-    z-index: 3;
-    position: absolute;
-    display: flex;
-    background-color: var(--dark-transparent);
-    padding-top: 1rem;
-    top: 0px;
-    right: 0px;
-    height: 100vh;
-    width: fit-content;
-    align-items: flex-start;
-    flex-direction: row;
-    font-weight: 300;
-    font-size: 0.7rem;
-    color: var(--primary-light);
-    pointer-events: all;
-    overflow: hidden;
-}
-
-#right-menu-buttons {
-    padding-top: 6rem;
-    flex-direction: column;
-}
-
-#right-menu {
-    width: fit-content;
-    height: fit-content;
-    top: 0px;
-    flex-direction: column;
-}
-
-#right-menu-title {
+.map-styles {
+    width: 18rem;
+    padding: 0 0 2rem 2rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-#right-menu-title>h2 {
-    padding: 0 1rem;
-}
-
-#right-menu-content {
-    overflow-y: auto;
-    padding-top: 4rem;
-    height: calc(88vh)
+    justify-content: space-between;
+    pointer-events: all;
+    cursor: pointer;
 }
 
 .mapboxgl-ctrl-bottom-right {

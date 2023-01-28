@@ -24,6 +24,22 @@ const skyLayer: SkyLayer = {
   },
 };
 
+// LOAD OSM BUILDING 🏢
+const osmLayer: any = {
+  id: "OSM-buildings",
+  source: "composite",
+  "source-layer": "building",
+  filter: ["==", "extrude", "true"],
+  type: "fill-extrusion",
+  minzoom: 11,
+  paint: {
+    "fill-extrusion-color": "#aaa",
+    "fill-extrusion-height": ["get", "height"],
+    "fill-extrusion-base": ["get", "min_height"],
+    "fill-extrusion-opacity": 0.9,
+  },
+};
+
 export const Mapbox: FC<{ mapboxAccessToken: any }> = (props) => {
   const { mapboxAccessToken } = props;
   return (
@@ -52,6 +68,7 @@ export const Mapbox: FC<{ mapboxAccessToken: any }> = (props) => {
           maxzoom={14}
         />
         <Layer {...skyLayer} />
+        <Layer {...osmLayer} />
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         <GeocoderControl
