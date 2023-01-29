@@ -10,7 +10,7 @@
     --primary-light-transp1: rgba(255, 255, 255, 0.7);
     --primary-light-transp2: rgba(255, 255, 255, 0.4);
     --primary-dark: black;
-    --dark-transparent: rgba(0, 0, 0, 0.85);
+    --dark-transparent: rgba(0, 0, 0, 0.8);
     --secondary-color: #8c8c8c;
     --secondary-transp1: #8c8c8cee;
     --icdt-color: #73CEE2;
@@ -119,24 +119,23 @@ h4 {
     z-index: -1;
     position: absolute;
     top: 0;
-    padding: 1.5rem 1rem;
     display: flex;
     height: 100vh;
     right: 0px;
     background-color: var(--dark-transparent);
-    padding-top: 1.5rem;
-    width: fit-content;
+    width: auto;
     align-items: flex-start;
-    flex-direction: column;
+    flex-direction: row;
     color: var(--primary-light);
     overflow: hidden;
     padding: 1.2;
+    min-width: 4.1rem;
 }
 
 #right-menu-buttons {
     display: flex;
     gap: 1.5rem;
-    padding-top: 3rem;
+    padding-top: 7rem;
     padding-right: 1.2rem;
     flex-direction: column;
 }
@@ -154,11 +153,12 @@ h4 {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 0.5rem;
 }
 
-#right-menu-content {
+#right-menu-body {
     overflow-y: auto;
-    padding: 3.5rem 5rem 0 0;
+    padding: 3.5rem 3.5rem 0 0;
     height: calc(88vh)
 }
 
