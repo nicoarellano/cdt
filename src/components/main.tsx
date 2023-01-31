@@ -37,7 +37,9 @@ export const Main: FC = () => {
       {Boolean(user) ? (
         <Mapbox mapboxAccessToken={token} />
       ) : (
-        <div className="message">Please log in</div>
+        <div className="message">
+          Please log in to get our full Digital Twin experience!
+        </div>
       )}
       <BimViewer />
     </>
