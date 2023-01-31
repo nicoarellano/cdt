@@ -1,28 +1,12 @@
-import { Mapbox } from "./components/Mapbox";
-// import { RightMenuButton } from "./components/right-menu-button";
-import { TopBar } from "./components/topBar";
-import { IcdtLogo } from "./components/icdt-logo";
-// import { SearchButton } from "./components/search-button";
-import { RightMenuContainer } from "./components/right-menu-container";
-import { BimViewer } from "./components/bim-viewer";
+import { FC } from "react";
+import { Main } from "./components/main";
+import "./index.css";
+import { UserProvider } from "./user-provider";
 
-const token = process.env.REACT_APP_MAPBOX_TOKEN;
-
-function App() {
+export const App: FC = () => {
   return (
-    <>
-      <TopBar>
-        <div id="top-left" className="row">
-          <IcdtLogo />
-          {/* <SearchButton /> */}
-        </div>
-        {/* <RightMenuButton /> */}
-      </TopBar>
-      <RightMenuContainer />
-      <Mapbox mapboxAccessToken={token} />
-      <BimViewer />
-    </>
+    <UserProvider>
+      <Main />
+    </UserProvider>
   );
-}
-
-export default App;
+};
