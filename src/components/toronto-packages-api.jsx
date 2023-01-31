@@ -7,14 +7,13 @@ export const TorontoPkgsApi = () => {
   );
 
   return (
-    <div className="hidden">
-      <h3>Data</h3>
+    <div className="right-menu-body">
       <ul>
         {Boolean(results.length) &&
           results.map((result, index) => {
             const key = `${result}${index}`;
             return (
-              <li key={key} className="row space-between" title="Add">
+              <li key={key} className="right-menu-table-two-rows" title="Add">
                 <h4>{result}</h4>
                 <AddRoundedIcon />
               </li>

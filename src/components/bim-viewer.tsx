@@ -1,7 +1,7 @@
-import { RightMenuButton } from "./right-menu-button";
+import { RightMenuButton } from "../../archive/right-menu-button";
 import { TopBar } from "./topBar";
 import { IcdtLogo } from "./icdt-logo";
-import { SearchButton } from "./search-button";
+// import { SearchButton } from "./search-button";
 import { RightMenuContainer } from "./right-menu-container";
 import { ToolsButton } from "./tools-button";
 import { LayersButton } from "./layers-button";
@@ -15,12 +15,10 @@ export const BimViewer = () => {
       <TopBar>
         <div id="top-left" className="row">
           <IcdtLogo />
-          <SearchButton />
+          {/* <SearchButton /> */}
         </div>
       </TopBar>
       <RightMenuContainer>
-        <RightMenuButton />
-        <br />
         <ToolsButton />
         <LayersButton />
         <ShareViewButton />

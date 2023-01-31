@@ -12,11 +12,20 @@ import { RightMenu } from "./right-menu";
 import { TorontoPkgsApi } from "./toronto-packages-api";
 import { RightMenuButtons } from "./right-menu-buttons";
 import { MapStyles } from "./map-styles";
-import ArrowBackIcon from "@mui/icons-material/ArrowBackIos";
+import { RightMenuHeader } from "./right-menu-header";
+import { SignIn } from "./auth/sign-in";
 
 export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
-  const [mapsOpen, setMapsOpen] = useState(false);
+
+  // const [isHidden, setisHidden] = useState("");
+
+  // const handleClickEvent = () => {
+  //   console.log(isHidden);
+  //   if (isHidden === "hidden") {
+  //     setisHidden("");
+  //   } else setisHidden("hidden");
+  // };
 
   return (
     <div id="right-container">
@@ -31,18 +40,19 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
         <RightMenu>
-          <div id="right-menu-header">
-            <div id="back-button" title="Back" className="icon">
-              <ArrowBackIcon />
-            </div>
-            <h2>Title</h2>
+          <div id="map-styles-container" className="hidden">
+            <RightMenuHeader title="Map Styles" />
+            <MapStyles />
           </div>
 
-          <div id="right-menu-title">
-            <aside id="right-menu-body">
-              <MapStyles />
-              <TorontoPkgsApi />
-            </aside>
+          <div id="sign-in-container" className="">
+            <RightMenuHeader title="Sign In" />
+            <SignIn />
+          </div>
+
+          <div id="datasets-container" className="hidden">
+            <RightMenuHeader title="Data" />
+            <TorontoPkgsApi />
           </div>
         </RightMenu>
         <RightMenuButtons>
@@ -51,7 +61,6 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
           <ShareViewButton />
           <UploadButton />
           <MapStylesButton />
-          {/* <MapStylesButton toggled={mapsOpen} toggle={setMapsOpen} /> */}
           <LoginButton />
           <InfoButton />
           <SettingsButton />
