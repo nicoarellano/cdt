@@ -1,12 +1,34 @@
-import { FC, useState } from "react";
+import { FC, useState, FormEvent } from "react";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useUserContext } from "../../user-provider";
 
 export const MailRegister: FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const auth = getAuth();
+  const [user, setUser] = useUserContext();
+
+  const onRegister = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const response = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const newUser = response.user;
+    await updateProfile(newUser, { displayName: name });
+    setUser(user);
+  };
+
   return (
-    <form className="column">
+    <form className="right-menu-center" onSubmit={onRegister}>
       <input
         type="name"
         className="menu-input"
@@ -25,12 +47,12 @@ export const MailRegister: FC = () => {
         type="password"
         className="menu-input"
         value={password}
-        placeholder={"Password"}
+        placeholder={"Password*"}
         onChange={(event) => setPassword(event.target.value)}
       />
-      <br />
+      <h5>*At least 10 characters</h5>
       <button type="submit" className="menu-button">
-        Register
+        Sign Up
       </button>
     </form>
   );

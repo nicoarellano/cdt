@@ -13,19 +13,37 @@ import { TorontoPkgsApi } from "./toronto-packages-api";
 import { RightMenuButtons } from "./right-menu-buttons";
 import { MapStyles } from "./map-styles";
 import { RightMenuHeader } from "./right-menu-header";
-import { SignIn } from "./auth/sign-in";
+import { Auth } from "./auth/auth";
 
 export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
+  const [sideMenuOpen, setSideMenuOpen] = useState(true);
+  const [currentMenu, setCurrentMenu] = useState<{}>({});
+  const [previousMenu, setPrevious] = useState<[]>([]);
 
-  // const [isHidden, setisHidden] = useState("");
+  const sideMenuToggle = () => {
+    setSideMenuOpen(!sideMenuOpen);
+  };
 
-  // const handleClickEvent = () => {
-  //   console.log(isHidden);
-  //   if (isHidden === "hidden") {
-  //     setisHidden("");
-  //   } else setisHidden("hidden");
-  // };
+  const rightMenu = {
+    mapStyles: (
+      <div id="map-styles-container" title="Map Styles">
+        <MapStyles />
+      </div>
+    ),
+    auth: (
+      <div id="sign-in-container" title="Authentication">
+        <Auth />
+      </div>
+    ),
+    datasets: (
+      <div id="datasets-container" title="Datasets">
+        <TorontoPkgsApi />
+      </div>
+    ),
+  };
+
+  // const currentMenuElement =
 
   return (
     <div id="right-container">
@@ -39,22 +57,14 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
         />
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
-        <RightMenu>
-          <div id="map-styles-container" className="hidden">
-            <RightMenuHeader title="Map Styles" />
-            <MapStyles />
-          </div>
-
-          <div id="sign-in-container" className="">
-            <RightMenuHeader title="Sign In" />
-            <SignIn />
-          </div>
-
-          <div id="datasets-container" className="hidden">
-            <RightMenuHeader title="Data" />
-            <TorontoPkgsApi />
-          </div>
-        </RightMenu>
+        <aside className={sideMenuOpen ? "" : "hidden"}>
+          <RightMenu>
+            <header onClick={sideMenuToggle}>
+              <RightMenuHeader title={rightMenu.auth.props.title} />
+            </header>
+            {rightMenu.auth}
+          </RightMenu>
+        </aside>
         <RightMenuButtons>
           <ToolsButton />
           <LayersButton />
