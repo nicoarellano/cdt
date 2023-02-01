@@ -6,6 +6,7 @@ import Map, {
   NavigationControl,
   GeolocateControl,
 } from "react-map-gl";
+// import { useMapContext } from "../user-provider";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import GeocoderControl from "./geocoder-control";
@@ -22,6 +23,8 @@ const skyLayer: SkyLayer = {
     "sky-atmosphere-sun-intensity": 15,
   },
 };
+
+// [mapStyle] = useMapContext("satellite");
 
 // LOAD OSM BUILDING 🏢
 const osmLayer: any = {

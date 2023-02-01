@@ -11,6 +11,8 @@ export const userContext = createContext<
   [User | null, (user: User | null) => void]
 >([null, () => {}]);
 
+// export const mapContext = createContext<string>(mapStyle:"satellite") => void;
+
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
@@ -24,3 +26,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
 export const useUserContext = () => {
   return useContext(userContext);
 };
+
+// export const useMapContext = () => {
+//   return useContext(userContext);
+// };

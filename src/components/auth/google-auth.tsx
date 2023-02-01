@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import GoogleButton from "react-google-button";
 
 export const GoogleAuth: FC = () => {
   const auth = getAuth();
@@ -11,8 +12,9 @@ export const GoogleAuth: FC = () => {
   ///
 
   return (
-    <button className="menu-button" onClick={onLoginClick}>
-      Google Login
-    </button>
+    // <button className="menu-button" onClick={}>
+    //   Login with Google
+    // </button>
+    <GoogleButton onClick={onLoginClick} type={"dark"} />
   );
 };
