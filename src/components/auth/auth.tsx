@@ -19,7 +19,7 @@ export const Auth: FC = () => {
         <div className="right-menu-center">
           <h5>
             Hi {user?.displayName}.
-            <br /> Lets explore Canada!
+            <br /> Let's explore Canada!
           </h5>
           <Logout />
         </div>
