@@ -4,10 +4,10 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
 import { IcdtLogo } from "./icdt-logo";
-// import { SearchButton } from "./search-button";
 import { RightMenuContainer } from "./right-menu-container";
 import { BimViewer } from "./bim-viewer";
 import { useUserContext } from "../user-provider";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const token = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -30,12 +30,16 @@ export const Main: FC = () => {
       <TopBar>
         <div id="top-left" className="row">
           <IcdtLogo />
-          {/* <SearchButton /> */}
         </div>
       </TopBar>
       <RightMenuContainer />
       {Boolean(user) ? (
-        <Mapbox mapboxAccessToken={token} />
+        <Router>
+          <Mapbox
+            mapboxAccessToken={token}
+            mapStyle={"mapbox://styles/mapbox/streets-v11"}
+          />
+        </Router>
       ) : (
         <div className="message">
           Please log in to get our full Digital Twin experience!
