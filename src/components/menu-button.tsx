@@ -4,16 +4,12 @@ interface Props {
   Icon: any;
   type: string;
   handleClick?: MouseEventHandler;
+  index?: number;
 }
 
-export const MenuButton: FC<Props> = ({ Icon, type, handleClick }) => {
+export const MenuButton: FC<Props> = ({ Icon, type, handleClick, index }) => {
   return (
-    <div
-      id={`${type}-button`}
-      className="icon"
-      title={type}
-      onClick={handleClick}
-    >
+    <div id={`${index}`} className="icon" title={type} onClick={handleClick}>
       {Icon}
     </div>
   );

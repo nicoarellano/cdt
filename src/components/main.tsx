@@ -37,7 +37,7 @@ export const Main: FC = () => {
         <Router>
           <Mapbox
             mapboxAccessToken={token}
-            mapStyle={"mapbox://styles/mapbox/streets-v11"}
+            mapStyle={"mapbox://styles/mapbox/satellite-streets-v11"}
           />
         </Router>
       ) : (

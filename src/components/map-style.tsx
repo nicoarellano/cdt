@@ -7,7 +7,9 @@ export const MapStyle: FC<{ type: string; url: string }> = ({ type, url }) => {
       title={`${type} style`}
       className="map-styles"
     >
-      <h3 className="effect">{type}</h3>
+      <h3 id={url} className="effect">
+        {type}
+      </h3>
       <img
         id={url}
         src={`./${type}.png`}

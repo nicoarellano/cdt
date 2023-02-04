@@ -90,9 +90,6 @@ export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
   let pitch = Number(url.searchParams.get("pitch"));
 
   const mainUrl = `${url.origin}${url.pathname}`;
-
-  // const { mapboxAccessToken } = props;
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {

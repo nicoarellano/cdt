@@ -21,6 +21,7 @@ import { RightMenu } from "./right-menu";
 import { MapStyles } from "./map-styles";
 import { TorontoPkgsApi } from "./toronto-packages-api";
 import { Auth } from "./auth/auth";
+import { ToolsMenu } from "./tools-menu";
 
 export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
@@ -28,9 +29,14 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   // const [currentMenu, setCurrentMenu] = useState<{}>({});
   // const [previousMenu, setPrevious] = useState<[]>([]);
 
+  const [menuIndex, setMenuIndex] = useState(0);
+
   const [rightmenuOpen, setRightMenuOpen] = useState(false);
   const menuButtonClick = (e: any) => {
     e.preventDefault();
+    const target = e.currentTarget as Element;
+    const index = Number(target.id);
+    setMenuIndex(index);
     setRightMenuOpen(!rightmenuOpen);
   };
 
@@ -40,27 +46,42 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
     setShareViewMenuOpen(!shareViewMenuOpen);
   };
 
-  const rightMenu = {
-    mapStyles: (
+  const rightMenu = [
+    <div />,
+    <div id="tools-container" title="Tools">
+      <ToolsMenu />
+    </div>,
+    <div id="datasets-container" title="Layers">
+      <TorontoPkgsApi />
+    </div>,
+    <div
+      id="upload-container"
+      title="Upload"
+      className="right-menu-body"
+    ></div>,
+    <div title="Map Styles">
       <Router>
         <div id="map-styles-container" title="Map Styles">
           <MapStyles />
         </div>
       </Router>
-    ),
-    auth: (
-      <div id="sign-in-container" title="Authentication">
-        <Auth />
-      </div>
-    ),
-    datasets: (
-      <div id="datasets-container" title="Datasets">
-        <TorontoPkgsApi />
-      </div>
-    ),
-  };
+    </div>,
+    <div id="sign-in-container" title="Authentication">
+      <Auth />
+    </div>,
+    <div
+      id="info-container"
+      title="Information"
+      className="right-menu-body"
+    ></div>,
+    <div
+      id="settings-container"
+      title="Settings"
+      className="right-menu-body"
+    ></div>,
+  ];
 
-  const currentMenuElement = rightMenu.mapStyles;
+  const currentMenuElement = rightMenu[menuIndex];
 
   return (
     <div id="right-container">
@@ -74,7 +95,7 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
         />
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
-        <aside className={rightmenuOpen ? "hidden" : ""}>
+        <aside className={rightmenuOpen ? "" : "hidden"}>
           <RightMenu>
             <header onClick={menuButtonClick}>
               <RightMenuHeader title={currentMenuElement.props.title} />
@@ -83,31 +104,54 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
           </RightMenu>
         </aside>
         <div className={rightmenuOpen ? "full-page-flex" : "hidden"}></div>
-        <nav id="right-menu-buttons" className={rightmenuOpen ? "" : "hidden"}>
-          <MenuButton type={"Tools"} Icon={<ToolsIcon />} />
+        <nav id="right-menu-buttons" className={rightmenuOpen ? "hidden" : ""}>
+          <MenuButton
+            type={"Tools"}
+            Icon={<ToolsIcon />}
+            handleClick={menuButtonClick}
+            index={1}
+          />
           <MenuButton
             type={"Layers"}
             Icon={<LayersIcon />}
             handleClick={menuButtonClick}
+            index={2}
           />
           <MenuButton
             type={"Share View"}
             Icon={<SharedViewIcon />}
             handleClick={haredViewClick}
           />
-          <MenuButton type={"Upload"} Icon={<UploadIcon />} />
+          <MenuButton
+            type={"Upload"}
+            Icon={<UploadIcon />}
+            handleClick={menuButtonClick}
+            index={3}
+          />
           <MenuButton
             type={"Map Styles"}
             Icon={<MapStylesIcon />}
             handleClick={menuButtonClick}
+            index={4}
           />
           <MenuButton
             type={"Log in"}
             Icon={<LoginIcon />}
             handleClick={menuButtonClick}
+            index={5}
           />
-          <MenuButton type={"Info"} Icon={<InfoIcon />} />
-          <MenuButton type={"Settings"} Icon={<SettingsIcon />} />
+          <MenuButton
+            type={"Info"}
+            Icon={<InfoIcon />}
+            handleClick={menuButtonClick}
+            index={6}
+          />
+          <MenuButton
+            type={"Settings"}
+            Icon={<SettingsIcon />}
+            handleClick={menuButtonClick}
+            index={7}
+          />
         </nav>
         {children}
       </aside>
