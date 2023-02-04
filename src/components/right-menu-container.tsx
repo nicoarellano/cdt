@@ -1,35 +1,52 @@
 import { FC, PropsWithChildren, useState } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+
 import Hamburger from "hamburger-react";
-import { ToolsButton } from "./tools-button";
-import { LayersButton } from "./layers-button";
-import { ShareViewButton } from "./share-view-button";
-import { UploadButton } from "./upload-button";
-import { MapStylesButton } from "./map-styles-button";
-import { LoginButton } from "./login-button";
-import { InfoButton } from "./info-button";
-import { SettingsButton } from "./settings-button";
-import { RightMenu } from "./right-menu";
-import { TorontoPkgsApi } from "./toronto-packages-api";
-import { RightMenuButtons } from "./right-menu-buttons";
-import { MapStyles } from "./map-styles";
+import { MenuButton } from "./menu-button";
+
+// Icons
+import LayersIcon from "@mui/icons-material/LayersOutlined";
+import ToolsIcon from "@mui/icons-material/DesignServicesOutlined";
+import UploadIcon from "@mui/icons-material/UploadFileOutlined";
+import MapStylesIcon from "@mui/icons-material/MapOutlined";
+import SharedViewIcon from "@mui/icons-material/OpenInNewOutlined";
+import LoginIcon from "@mui/icons-material/PersonOutlineOutlined";
+import InfoIcon from "@mui/icons-material/InfoOutlined";
+import SettingsIcon from "@mui/icons-material/SettingsOutlined";
+
+// Menus
 import { RightMenuHeader } from "./right-menu-header";
+import { ShareViewWindow } from "./share-view-window";
+import { RightMenu } from "./right-menu";
+import { MapStyles } from "./map-styles";
+import { TorontoPkgsApi } from "./toronto-packages-api";
 import { Auth } from "./auth/auth";
 
 export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
-  const [sideMenuOpen, setSideMenuOpen] = useState(true);
-  const [currentMenu, setCurrentMenu] = useState<{}>({});
-  const [previousMenu, setPrevious] = useState<[]>([]);
 
-  const sideMenuToggle = () => {
-    setSideMenuOpen(!sideMenuOpen);
+  // const [currentMenu, setCurrentMenu] = useState<{}>({});
+  // const [previousMenu, setPrevious] = useState<[]>([]);
+
+  const [rightmenuOpen, setRightMenuOpen] = useState(false);
+  const menuButtonClick = (e: any) => {
+    e.preventDefault();
+    setRightMenuOpen(!rightmenuOpen);
+  };
+
+  const [shareViewMenuOpen, setShareViewMenuOpen] = useState(false);
+  const haredViewClick = (e: any) => {
+    e.preventDefault();
+    setShareViewMenuOpen(!shareViewMenuOpen);
   };
 
   const rightMenu = {
     mapStyles: (
-      <div id="map-styles-container" title="Map Styles">
-        <MapStyles />
-      </div>
+      <Router>
+        <div id="map-styles-container" title="Map Styles">
+          <MapStyles />
+        </div>
+      </Router>
     ),
     auth: (
       <div id="sign-in-container" title="Authentication">
@@ -43,7 +60,7 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
     ),
   };
 
-  // const currentMenuElement =
+  const currentMenuElement = rightMenu.mapStyles;
 
   return (
     <div id="right-container">
@@ -57,27 +74,50 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
         />
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
-        <aside className={sideMenuOpen ? "" : "hidden"}>
+        <aside className={rightmenuOpen ? "hidden" : ""}>
           <RightMenu>
-            <header onClick={sideMenuToggle}>
-              <RightMenuHeader title={rightMenu.auth.props.title} />
+            <header onClick={menuButtonClick}>
+              <RightMenuHeader title={currentMenuElement.props.title} />
             </header>
-            {rightMenu.auth}
+            {currentMenuElement}
           </RightMenu>
         </aside>
-        <RightMenuButtons>
-          <ToolsButton />
-          <LayersButton />
-          <ShareViewButton />
-          <UploadButton />
-          <MapStylesButton />
-          <LoginButton />
-          <InfoButton />
-          <SettingsButton />
-        </RightMenuButtons>
+        <div className={rightmenuOpen ? "full-page-flex" : "hidden"}></div>
+        <nav id="right-menu-buttons" className={rightmenuOpen ? "" : "hidden"}>
+          <MenuButton type={"Tools"} Icon={<ToolsIcon />} />
+          <MenuButton
+            type={"Layers"}
+            Icon={<LayersIcon />}
+            handleClick={menuButtonClick}
+          />
+          <MenuButton
+            type={"Share View"}
+            Icon={<SharedViewIcon />}
+            handleClick={haredViewClick}
+          />
+          <MenuButton type={"Upload"} Icon={<UploadIcon />} />
+          <MenuButton
+            type={"Map Styles"}
+            Icon={<MapStylesIcon />}
+            handleClick={menuButtonClick}
+          />
+          <MenuButton
+            type={"Log in"}
+            Icon={<LoginIcon />}
+            handleClick={menuButtonClick}
+          />
+          <MenuButton type={"Info"} Icon={<InfoIcon />} />
+          <MenuButton type={"Settings"} Icon={<SettingsIcon />} />
+        </nav>
         {children}
       </aside>
-      ;
+      <div className="full-page-flex">
+        <ShareViewWindow
+          handleClick={haredViewClick}
+          toggled={shareViewMenuOpen}
+        />
+        ;
+      </div>
     </div>
   );
 };

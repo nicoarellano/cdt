@@ -11,10 +11,5 @@ export const GoogleAuth: FC = () => {
   };
   ///
 
-  return (
-    // <button className="menu-button" onClick={}>
-    //   Login with Google
-    // </button>
-    <GoogleButton onClick={onLoginClick} type={"dark"} />
-  );
+  return <GoogleButton onClick={onLoginClick} type={"dark"} />;
 };

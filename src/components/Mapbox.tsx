@@ -1,12 +1,14 @@
 import { FC } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import Map, {
   Source,
   Layer,
   NavigationControl,
   GeolocateControl,
+  ViewStateChangeEvent,
 } from "react-map-gl";
-// import { useMapContext } from "../user-provider";
+// import ModelLayer from "./model-layer";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import GeocoderControl from "./geocoder-control";
@@ -24,8 +26,6 @@ const skyLayer: SkyLayer = {
   },
 };
 
-// [mapStyle] = useMapContext("satellite");
-
 // LOAD OSM BUILDING 🏢
 const osmLayer: any = {
   id: "OSM-buildings",
@@ -42,23 +42,91 @@ const osmLayer: any = {
   },
 };
 
-export const Mapbox: FC<{ mapboxAccessToken: any }> = (props) => {
-  const { mapboxAccessToken } = props;
+// LOAD THREE 🏢
+// const modelLayer: any = {
+//   id: "layer-3d",
+//   url: "./src/assets/models/ON-Ottawa-cu-masses.glb",
+//   origin: [45.38435, -75.69435],
+//   altitude: 80,
+//   rotateY: 1,
+//   scale: 1,
+// };
+
+/*
+coordinates: {
+  lat: 45.38435,
+  lng: -75.69435,
+  msl: 80,
+map.on("load", () => {
+  map.addControl(new mapboxgl.NavigationControl());
+  map.addLayer(
+    new ModelLayer({
+      id: "layer-3d",
+      url: "./model.glb",
+      origin: [30.519551776681, 50.428953714395],
+      altitude: 26.3,
+      rotateY: 1,
+      scale: 34.8
+    })
+  );
+});
+*/
+
+export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
+  mapboxAccessToken,
+  mapStyle = "satellite-streets-v11",
+}) => {
+  // Get shared position
+  const currentUrl: string = window.location.href;
+  const url = new URL(currentUrl);
+
+  let lng = Number(url.searchParams.get("lng"));
+  lng = Boolean(lng) ? lng : -98.74;
+  let lat = Number(url.searchParams.get("lat"));
+  lat = Boolean(lat) ? lat : 56.415;
+  let zoom = Number(url.searchParams.get("zoom"));
+  zoom = Boolean(zoom) ? zoom : 4;
+  let bearing = Number(url.searchParams.get("bearing"));
+  let pitch = Number(url.searchParams.get("pitch"));
+
+  const mainUrl = `${url.origin}${url.pathname}`;
+
+  // const { mapboxAccessToken } = props;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const onMoveChange = (event: ViewStateChangeEvent) => {
+    let lat = event.viewState.latitude.toString();
+    let lng = event.viewState.longitude.toString();
+    let zoom = event.viewState.zoom.toString();
+    let bearing = event.viewState.bearing.toString();
+    let pitch = event.viewState.pitch.toString();
+
+    setSearchParams({
+      lng: lng,
+      lat: lat,
+      zoom: zoom,
+      bearing: bearing,
+      pitch: pitch,
+    });
+  };
+
   return (
     <>
       <Map
         initialViewState={{
-          latitude: 56.415,
-          longitude: -98.74,
-          zoom: 4,
-          bearing: 0,
-          pitch: 0,
+          latitude: lat,
+          longitude: lng,
+          zoom: zoom,
+          bearing: bearing,
+          pitch: pitch,
         }}
+        onMove={onMoveChange}
         projection="globe"
         antialias={true}
         doubleClickZoom={false}
         maxPitch={85}
-        mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+        mapStyle={mapStyle}
         mapboxAccessToken={mapboxAccessToken}
         terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
       >
@@ -71,6 +139,7 @@ export const Mapbox: FC<{ mapboxAccessToken: any }> = (props) => {
         />
         <Layer {...skyLayer} />
         <Layer {...osmLayer} />
+        {/* <Layer {...modelLayer} /> */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         <GeocoderControl
