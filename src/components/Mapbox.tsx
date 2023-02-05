@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import Map, {
@@ -74,7 +74,7 @@ map.on("load", () => {
 
 export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
   mapboxAccessToken,
-  mapStyle = "satellite-streets-v11",
+  mapStyle,
 }) => {
   // Get shared position
   const currentUrl: string = window.location.href;
@@ -89,8 +89,13 @@ export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
   let bearing = Number(url.searchParams.get("bearing"));
   let pitch = Number(url.searchParams.get("pitch"));
 
-  const mainUrl = `${url.origin}${url.pathname}`;
+  // const mainUrl = `${url.origin}${url.pathname}`;
   const [searchParams, setSearchParams] = useSearchParams();
+  const [object, setObject] = useState({
+    longitude: lng,
+    latitude: lat,
+    zoom: zoom,
+  });
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
     let lat = event.viewState.latitude.toString();
@@ -118,6 +123,15 @@ export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
           bearing: bearing,
           pitch: pitch,
         }}
+        fog={{
+          range: [-1, 15],
+          "horizon-blend": 0.05,
+          color: "white",
+        }}
+        onLoad={(map) => {
+          console.log("hello");
+          <Layer {...osmLayer} />;
+        }}
         onMove={onMoveChange}
         projection="globe"
         antialias={true}
@@ -135,8 +149,6 @@ export const Mapbox: FC<{ mapboxAccessToken: any; mapStyle: string }> = ({
           maxzoom={14}
         />
         <Layer {...skyLayer} />
-        <Layer {...osmLayer} />
-        {/* <Layer {...modelLayer} /> */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         <GeocoderControl

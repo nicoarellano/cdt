@@ -225,7 +225,7 @@ h5 {
 
 .right-menu-body {
     overflow: auto;
-    padding: 2.5rem 0 0 0;
+    padding: 2.5rem 0 0 1.5rem;
     height: 88vh;
     max-width: 50vw;
 }
@@ -238,7 +238,6 @@ h5 {
     padding-left: 1rem;
     pointer-events: all;
     cursor: pointer;
-
 }
 
 .right-menu-table-two-rows>* {
@@ -284,26 +283,22 @@ h5 {
     transition: all 0.3s ease 0s;
 }
 
-.icon:hover>svg {
+svg:hover {
     fill: var(--icdt-color);
     scale: 1.03;
-}
-
-.animate {
-    transform: translate(0, 4rem);
-    opacity: 0;
-    transition: all 0.3s ease 0s;
-}
-
-.icdt-color2>svg {
-    fill: var(--icdt-color2);
-    scale: 1.02;
 }
 
 .row {
     display: flex;
     flex-direction: row;
-    align-items: center;
+}
+
+.icons-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0.8rem;
 }
 
 .column {
@@ -338,6 +333,10 @@ h5 {
 
 .mapboxgl-ctrl-bottom-right {
     visibility: collapse;
+}
+
+.hamburger-react>div {
+    height: 3px !important;
 }
 
 .place-icon>svg {

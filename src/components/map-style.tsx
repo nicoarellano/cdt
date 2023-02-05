@@ -2,11 +2,7 @@ import { FC } from "react";
 
 export const MapStyle: FC<{ type: string; url: string }> = ({ type, url }) => {
   return (
-    <div
-      id={`map-style-${type}`}
-      title={`${type} style`}
-      className="map-styles"
-    >
+    <div id={url} title={`${type} style`} className="map-styles">
       <h3 id={url} className="effect">
         {type}
       </h3>

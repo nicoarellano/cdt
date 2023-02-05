@@ -1,4 +1,4 @@
-import { FC, useState, Dispatch, SetStateAction } from "react";
+import { FC, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Hamburger from "hamburger-react";
@@ -91,10 +91,11 @@ export const RightMenuContainer: FC<Props> = ({ updateMapStyle }) => {
       <div id="right-menu-button" title="Menu">
         <Hamburger
           color="white"
-          size={28}
+          size={22}
           rounded={true}
           toggled={isOpen}
           toggle={setOpen}
+          distance="lg"
         />
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
