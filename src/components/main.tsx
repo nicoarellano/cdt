@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Mapbox } from "./Mapbox";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -25,6 +25,14 @@ export const Main: FC = () => {
     });
   }, []);
 
+  const [mapStyle, setMapStyle] = useState<string>(
+    "mapbox://styles/mapbox/satellite-streets-v11"
+  );
+
+  const updateMapStyle = (mapStyle: string): void => {
+    setMapStyle(mapStyle);
+  };
+
   return (
     <>
       <TopBar>
@@ -32,13 +40,10 @@ export const Main: FC = () => {
           <IcdtLogo />
         </div>
       </TopBar>
-      <RightMenuContainer />
+      <RightMenuContainer updateMapStyle={updateMapStyle} />
       {Boolean(user) ? (
         <Router>
-          <Mapbox
-            mapboxAccessToken={token}
-            mapStyle={"mapbox://styles/mapbox/satellite-streets-v11"}
-          />
+          <Mapbox mapboxAccessToken={token} mapStyle={mapStyle} />
         </Router>
       ) : (
         <div className="message">

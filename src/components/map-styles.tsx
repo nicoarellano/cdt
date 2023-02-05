@@ -1,14 +1,20 @@
-import { MouseEvent } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { MapStyle } from "./map-style";
 import { useSearchParams } from "react-router-dom";
 
-export const MapStyles = () => {
+interface Props {
+  updateMapStyle: (arg: string) => void;
+}
+
+export const MapStyles: FC<Props> = ({ updateMapStyle }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleMouseEvent = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const target = event.target as Element;
-    if (target) setSearchParams({ mapStyle: target.id });
+    const newMapStyle = `mapbox://styles/mapbox/${target.id}`;
+    if (target) updateMapStyle(newMapStyle);
+    // if (target) setSearchParams({ mapStyle: target.id });
   };
 
   return (
