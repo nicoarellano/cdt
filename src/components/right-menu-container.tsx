@@ -25,9 +25,13 @@ import { ToolsMenu } from "./tools-menu";
 
 interface Props {
   updateMapStyle: (arg: string) => void;
+  toggleOsm: (arg: boolean) => void;
 }
 
-export const RightMenuContainer: FC<Props> = ({ updateMapStyle }) => {
+export const RightMenuContainer: FC<Props> = ({
+  updateMapStyle,
+  toggleOsm,
+}) => {
   const [isOpen, setOpen] = useState(false);
 
   // console.log(mapStyleClickEvent);
@@ -52,7 +56,7 @@ export const RightMenuContainer: FC<Props> = ({ updateMapStyle }) => {
   const rightMenu = [
     <div />,
     <div id="tools-container" title="Tools">
-      <ToolsMenu />
+      <ToolsMenu toggleOsm={toggleOsm} />
     </div>,
     <div id="datasets-container" title="Layers">
       <TorontoPkgsApi />
@@ -163,7 +167,6 @@ export const RightMenuContainer: FC<Props> = ({ updateMapStyle }) => {
           handleClick={haredViewClick}
           toggled={shareViewMenuOpen}
         />
-        ;
       </div>
     </div>
   );

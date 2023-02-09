@@ -227,7 +227,7 @@ h5 {
     overflow: auto;
     padding: 2.5rem 0 0 1.5rem;
     height: 88vh;
-    max-width: 50vw;
+    max-width: 60vw;
 }
 
 .right-menu-table-two-rows {
@@ -238,6 +238,14 @@ h5 {
     padding-left: 1rem;
     pointer-events: all;
     cursor: pointer;
+}
+
+.color {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    width: 20px;
+    height: 23px;
+    padding: 0px;
 }
 
 .right-menu-table-two-rows>* {
@@ -291,6 +299,11 @@ svg:hover {
 .row {
     display: flex;
     flex-direction: row;
+}
+
+.end {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .icons-row {

@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "archive/right-menu-button.tsx"  ]
+, "archive/right-menu-button.tsx", "archive/mapbox copy.tsx", "archive/mapbox-3d-test.tsx", "archive/toronto-bikes.jsx", "archive/mapbox-pin.tsx", "archive/model-layer.js", "tests/maplibre.tsx"  ]
 }
