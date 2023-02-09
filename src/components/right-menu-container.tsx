@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useState } from "react";
+import { FC, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Hamburger from "hamburger-react";
@@ -23,11 +23,18 @@ import { TorontoPkgsApi } from "./toronto-packages-api";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
 
-export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
+interface Props {
+  updateMapStyle: (arg: string) => void;
+  toggleOsm: (arg: boolean) => void;
+}
+
+export const RightMenuContainer: FC<Props> = ({
+  updateMapStyle,
+  toggleOsm,
+}) => {
   const [isOpen, setOpen] = useState(false);
 
-  // const [currentMenu, setCurrentMenu] = useState<{}>({});
-  // const [previousMenu, setPrevious] = useState<[]>([]);
+  // console.log(mapStyleClickEvent);
 
   const [menuIndex, setMenuIndex] = useState(0);
 
@@ -49,7 +56,7 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
   const rightMenu = [
     <div />,
     <div id="tools-container" title="Tools">
-      <ToolsMenu />
+      <ToolsMenu toggleOsm={toggleOsm} />
     </div>,
     <div id="datasets-container" title="Layers">
       <TorontoPkgsApi />
@@ -62,7 +69,7 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
     <div title="Map Styles">
       <Router>
         <div id="map-styles-container" title="Map Styles">
-          <MapStyles />
+          <MapStyles updateMapStyle={updateMapStyle} />
         </div>
       </Router>
     </div>,
@@ -88,10 +95,11 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
       <div id="right-menu-button" title="Menu">
         <Hamburger
           color="white"
-          size={28}
+          size={22}
           rounded={true}
           toggled={isOpen}
           toggle={setOpen}
+          distance="lg"
         />
       </div>
       <aside id="right-box" className={isOpen ? "" : "hidden"}>
@@ -153,14 +161,12 @@ export const RightMenuContainer: FC<PropsWithChildren> = ({ children }) => {
             index={7}
           />
         </nav>
-        {children}
       </aside>
       <div className="full-page-flex">
         <ShareViewWindow
           handleClick={haredViewClick}
           toggled={shareViewMenuOpen}
         />
-        ;
       </div>
     </div>
   );

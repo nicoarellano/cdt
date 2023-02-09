@@ -1,11 +1,11 @@
-import { FC, useEffect } from "react";
-import { Mapbox } from "./Mapbox";
+import { FC, useEffect, useState } from "react";
+import { Mapbox } from "./mapbox";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
 import { IcdtLogo } from "./icdt-logo";
 import { RightMenuContainer } from "./right-menu-container";
-import { BimViewer } from "./bim-viewer";
+// import { BimViewer } from "./bim-viewer";
 import { useUserContext } from "../user-provider";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -25,6 +25,23 @@ export const Main: FC = () => {
     });
   }, []);
 
+  // Set map style 🗺️
+
+  const [mapStyle, setMapStyle] = useState<string>(
+    "mapbox://styles/mapbox/satellite-streets-v11"
+  );
+
+  const updateMapStyle = (mapStyle: string): void => {
+    setMapStyle(mapStyle);
+  };
+
+  // tooggle OSM 🏢
+  const [osmVisibility, setOsmVisibility] = useState<boolean>(true);
+
+  const toggleOsm = (osmVisibility: boolean): void => {
+    setOsmVisibility(osmVisibility);
+  };
+
   return (
     <>
       <TopBar>
@@ -32,12 +49,16 @@ export const Main: FC = () => {
           <IcdtLogo />
         </div>
       </TopBar>
-      <RightMenuContainer />
+      <RightMenuContainer
+        updateMapStyle={updateMapStyle}
+        toggleOsm={toggleOsm}
+      />
       {Boolean(user) ? (
         <Router>
           <Mapbox
             mapboxAccessToken={token}
-            mapStyle={"mapbox://styles/mapbox/satellite-streets-v11"}
+            mapStyle={mapStyle}
+            osmVisibility={true}
           />
         </Router>
       ) : (
@@ -45,7 +66,7 @@ export const Main: FC = () => {
           Please log in to get our full Digital Twin experience!
         </div>
       )}
-      <BimViewer />
+      {/* <BimViewer /> */}
     </>
   );
 };
