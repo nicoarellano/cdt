@@ -13,14 +13,29 @@ import type { SkyLayer } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import mapboxgl, { LngLatLike, MercatorCoordinate, AnyLayer } from "mapbox-gl";
+import mapboxgl, {
+  LngLatLike,
+  MercatorCoordinate,
+  AnyLayer,
+  FillExtrusionLayer,
+} from "mapbox-gl";
 
-import "mapbox-gl/dist/mapbox-gl.css";
 import GeocoderControl from "./geocoder-control";
 
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
 
+import {
+  PerspectiveCamera,
+  Scene,
+  DirectionalLight,
+  Vector3,
+  Matrix4,
+  WebGLRenderer,
+} from "three";
+
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { IFCLoader } from "web-ifc-three";
+import { FillPaintProps } from "maplibre-gl";
 
 const skyLayer: SkyLayer = {
   id: "sky",
@@ -33,11 +48,14 @@ const skyLayer: SkyLayer = {
 };
 
 // LOAD OSM BUILDING 🏢
-const osmLayer: any = {
-  id: "OSM-buildings",
+
+const osmLayer: FillExtrusionLayer = {
+  id: "add-3d-buildings",
+  type: "fill-extrusion",
   source: "composite",
   "source-layer": "building",
-  type: "fill-extrusion",
+  filter: ["==", "extrude", "true"],
+  minzoom: 14,
   paint: {
     "fill-extrusion-color": "#aaa",
     "fill-extrusion-height": ["get", "height"],
@@ -47,79 +65,63 @@ const osmLayer: any = {
 };
 
 export const Mapbox: FC<{
-  mapboxAccessToken: any;
+  mapboxAccessToken: string | undefined;
   mapStyle: string;
   osmVisibility: boolean;
 }> = ({ mapboxAccessToken, mapStyle, osmVisibility }) => {
+  const mapRef: any = useRef();
+
   // Get shared position
   const currentUrl: string = window.location.href;
   const url = new URL(currentUrl);
-  const mapRef: any = useRef();
 
-  let lng = Number(url.searchParams.get("lng"));
-  lng = Boolean(lng) ? lng : -75.7003243105428;
-  let lat = Number(url.searchParams.get("lat"));
-  lat = Boolean(lat) ? lat : 45.38051079589255;
-  let zoom = Number(url.searchParams.get("zoom"));
-  zoom = Boolean(zoom) ? zoom : 14;
-  let bearing = Number(url.searchParams.get("bearing"));
-  let pitch = Number(url.searchParams.get("pitch"));
+  const [viewState, setViewState] = useState({
+    longitude: url.searchParams.get("lng")
+      ? Number(url.searchParams.get("lng"))
+      : -75.69435,
+    latitude: url.searchParams.get("lat")
+      ? Number(url.searchParams.get("lat"))
+      : 45.38435,
+    zoom: url.searchParams.get("zoom")
+      ? Number(url.searchParams.get("zoom"))
+      : 11,
+    bearing: url.searchParams.get("bearing")
+      ? Number(url.searchParams.get("bearing"))
+      : 0,
+    pitch: url.searchParams.get("pitch")
+      ? Number(url.searchParams.get("pitch"))
+      : 0,
+  });
 
-  // const mainUrl = `${url.origin}${url.pathname}`;
   const [, setSearchParams] = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
-    let lat = event.viewState.latitude.toString();
-    let lng = event.viewState.longitude.toString();
-    let zoom = event.viewState.zoom.toString();
-    let bearing = event.viewState.bearing.toString();
-    let pitch = event.viewState.pitch.toString();
+    setViewState(event.viewState);
+    let currentLat = event.viewState.latitude.toString();
+    let currentLng = event.viewState.longitude.toString();
+    let currentZoom = event.viewState.zoom.toString();
+    let currentBearing = event.viewState.bearing.toString();
+    let currentPitch = event.viewState.pitch.toString();
 
     setSearchParams({
-      lng: lng,
-      lat: lat,
-      zoom: zoom,
-      bearing: bearing,
-      pitch: pitch,
+      lat: currentLat,
+      lng: currentLng,
+      zoom: currentZoom,
+      bearing: currentBearing,
+      pitch: currentPitch,
     });
   };
 
-  // const onMoveChange = useCallback(()=>{
-  //   mapRef.current.on('move', () => {
-  //           (event: ViewStateChangeEvent) => {
-  //   let lat = event.viewState.latitude.toString();
-  //   let lng = event.viewState.longitude.toString();
-  //   let zoom = event.viewState.zoom.toString();
-  //   let bearing = event.viewState.bearing.toString();
-  //   let pitch = event.viewState.pitch.toString();
-
-  //   setSearchParams({
-  //     lng: lng,
-  //     lat: lat,
-  //     zoom: zoom,
-  //     bearing: bearing,
-  //     pitch: pitch,
-  //   });
-  // };
-  //   })
-
-  // })
-
-  // const [lng, setLng] = useState(32.866287);
-  // const [lat, setLang] = useState(39.925533);
-  // const [zoom, setZoom] = useState(20);
-
+  // THREE JS 3️⃣
   const [_customLayer, setCustomlayer]: any = useState(null);
 
   useEffect(() => {
-    const modelOrigin: LngLatLike = [-75.6945467664462, 45.384566477004036];
-    const modelAltitude = 100;
+    const modelOrigin: LngLatLike = [-75.69435, 45.38435];
+    const modelAltitude = 115;
     const modelRotate = [Math.PI / 2, 0, 0];
 
-    const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(
-      modelOrigin,
-      modelAltitude
-    );
+    const modelAsMercatorCoordinate: MercatorCoordinate =
+      mapboxgl.MercatorCoordinate.fromLngLat(modelOrigin, modelAltitude);
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     const modelTransform: any = {
@@ -135,33 +137,31 @@ export const Mapbox: FC<{
       scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits(),
     };
 
-    const THREE = window.THREE;
-
-    // configuration of the custom layer for a 3D model per the CustomLayerInterface
     const customLayer: any = {
       id: "3d-model",
       type: "custom",
       renderingMode: "3d",
       onAdd: function (map: any, gl: any) {
-        this.camera = new THREE.Camera();
-        this.scene = new THREE.Scene();
-        const directionalLight = new THREE.DirectionalLight(0xffffff);
+        this.camera = new PerspectiveCamera();
+        this.scene = new Scene();
+        const directionalLight = new DirectionalLight(0xffffff);
         directionalLight.position.set(0, -70, 100).normalize();
         this.scene.add(directionalLight);
 
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff);
+        const directionalLight2 = new DirectionalLight(0xffffff);
         directionalLight2.position.set(0, 70, 100).normalize();
         this.scene.add(directionalLight2);
 
-        const loader = new GLTFLoader();
-        loader.load("./ON-Ottawa-cu-masses.glb", (gltf) => {
+        const gltfLoader = new GLTFLoader();
+        const ifcLoader = new IFCLoader();
+        ifcLoader.ifcManager.setWasmPath("../wasm/");
+
+        gltfLoader.load("./ON-Ottawa-cu-masses.glb", (gltf) => {
           this.scene.add(gltf.scene);
         });
         this.map = map;
 
-        console.log("model loaded complete", this.scene);
-
-        this.renderer = new THREE.WebGLRenderer({
+        this.renderer = new WebGLRenderer({
           canvas: map.getCanvas(),
           context: gl,
           antialias: true,
@@ -170,28 +170,28 @@ export const Mapbox: FC<{
         this.renderer.autoClear = false;
       },
       render: function (gl: any, matrix: any) {
-        const rotationX = new THREE.Matrix4().makeRotationAxis(
-          new THREE.Vector3(1, 0, 0),
+        const rotationX = new Matrix4().makeRotationAxis(
+          new Vector3(1, 0, 0),
           modelTransform.rotateX
         );
-        const rotationY = new THREE.Matrix4().makeRotationAxis(
-          new THREE.Vector3(0, 1, 0),
+        const rotationY = new Matrix4().makeRotationAxis(
+          new Vector3(0, 1, 0),
           modelTransform.rotateY
         );
-        const rotationZ = new THREE.Matrix4().makeRotationAxis(
-          new THREE.Vector3(0, 0, 1),
+        const rotationZ = new Matrix4().makeRotationAxis(
+          new Vector3(0, 0, 1),
           modelTransform.rotateZ
         );
 
-        const m = new THREE.Matrix4().fromArray(matrix);
-        const l = new THREE.Matrix4()
+        const m = new Matrix4().fromArray(matrix);
+        const l = new Matrix4()
           .makeTranslation(
             modelTransform.translateX,
             modelTransform.translateY,
             modelTransform.translateZ
           )
           .scale(
-            new THREE.Vector3(
+            new Vector3(
               modelTransform.scale,
               -modelTransform.scale,
               modelTransform.scale
@@ -214,13 +214,8 @@ export const Mapbox: FC<{
     <>
       <Map
         id="my-map"
-        initialViewState={{
-          latitude: lat,
-          longitude: lng,
-          zoom: zoom,
-          bearing: bearing,
-          pitch: pitch,
-        }}
+        {...viewState}
+        onMove={onMoveChange}
         fog={{
           range: [-1, 15],
           "horizon-blend": 0.05,
@@ -230,11 +225,15 @@ export const Mapbox: FC<{
         onLoad={(map) => {
           map.target.addLayer(_customLayer);
         }}
-        onMove={onMoveChange}
         projection="globe"
         antialias={true}
         doubleClickZoom={false}
         maxPitch={85}
+        minZoom={3}
+        maxBounds={[
+          [-141.1, 41.5],
+          [-52, 83.4],
+        ]}
         mapStyle={mapStyle}
         mapboxAccessToken={mapboxAccessToken}
         terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
@@ -246,7 +245,11 @@ export const Mapbox: FC<{
           tileSize={512}
           maxzoom={14}
         ></Source>
-        {Boolean(true) ? <Layer {...osmLayer} /> : null}
+        <Source id="buildings">
+          <Layer {...osmLayer} />
+        </Source>
+        id=
+        {/* {Boolean(osmVisibility) ? <Layer {...osmLayer} /> : null} */}
         <Layer {...skyLayer} />
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
