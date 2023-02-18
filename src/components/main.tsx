@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { Mapbox } from "./mapbox";
+// import Maplibre from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
 import { IcdtLogo } from "./icdt-logo";
 import { RightMenuContainer } from "./right-menu-container";
-// import { BimViewer } from "./bim-viewer";
 import { useUserContext } from "../user-provider";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -36,12 +36,11 @@ export const Main: FC = () => {
   };
 
   // tooggle OSM 🏢
-  const [osmVisibility, setOsmVisibility] = useState<boolean>(true);
+  const [osmVisibility, setOsmVisibility] = useState<boolean>(false);
 
   const toggleOsm = (osmVisibility: boolean): void => {
     setOsmVisibility(osmVisibility);
   };
-
   return (
     <>
       <TopBar>
@@ -55,10 +54,15 @@ export const Main: FC = () => {
       />
       {Boolean(user) ? (
         <Router>
-          <Mapbox
+          {/* <Maplibre
             mapboxAccessToken={token}
             mapStyle={mapStyle}
             osmVisibility={true}
+          /> */}
+          <Mapbox
+            mapboxAccessToken={token}
+            mapStyle={mapStyle}
+            osmVisibility={osmVisibility}
           />
         </Router>
       ) : (
@@ -66,7 +70,6 @@ export const Main: FC = () => {
           Please log in to get our full Digital Twin experience!
         </div>
       )}
-      {/* <BimViewer /> */}
     </>
   );
 };

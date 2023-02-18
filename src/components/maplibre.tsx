@@ -11,7 +11,9 @@ import Map, {
 
 import type { SkyLayer } from "react-map-gl";
 
-import "mapbox-gl/dist/mapbox-gl.css";
+import "maplibre-gl/dist/maplibre-gl.css";
+
+import maplibregl from "maplibre-gl";
 
 import mapboxgl, {
   LngLatLike,
@@ -35,7 +37,6 @@ import {
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { IFCLoader } from "web-ifc-three";
-import { FillPaintProps } from "maplibre-gl";
 
 const skyLayer: SkyLayer = {
   id: "sky",
@@ -48,23 +49,39 @@ const skyLayer: SkyLayer = {
 };
 
 // LOAD OSM BUILDING 🏢
-
 const osmLayer: FillExtrusionLayer = {
   id: "add-3d-buildings",
-  type: "fill-extrusion",
   source: "composite",
   "source-layer": "building",
   filter: ["==", "extrude", "true"],
-  minzoom: 14,
+  type: "fill-extrusion",
+  minzoom: 15,
   paint: {
     "fill-extrusion-color": "#aaa",
-    "fill-extrusion-height": ["get", "height"],
-    "fill-extrusion-base": ["get", "min_height"],
+    // Use an 'interpolate'
+    "fill-extrusion-height": [
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      15,
+      0,
+      15.05,
+      ["get", "height"],
+    ],
+    "fill-extrusion-base": [
+      "interpolate",
+      ["linear"],
+      ["zoom"],
+      15,
+      0,
+      15.05,
+      ["get", "min_height"],
+    ],
     "fill-extrusion-opacity": 0.9,
   },
 };
 
-export const Mapbox: FC<{
+export const Maplibre: FC<{
   mapboxAccessToken: string | undefined;
   mapStyle: string;
   osmVisibility: boolean;
@@ -213,43 +230,24 @@ export const Mapbox: FC<{
   return (
     <>
       <Map
-        id="my-map"
+        mapLib={maplibregl}
         {...viewState}
         onMove={onMoveChange}
-        fog={{
-          range: [-1, 15],
-          "horizon-blend": 0.05,
-          color: "white",
-        }}
+        // fog={{
+        //   range: [-1, 15],
+        //   "horizon-blend": 0.05,
+        //   color: "white",
+        // }}
         ref={mapRef}
         onLoad={(map) => {
           map.target.addLayer(_customLayer);
         }}
-        projection="globe"
-        antialias={true}
-        doubleClickZoom={false}
         maxPitch={85}
-        minZoom={3}
-        maxBounds={[
-          [-141.1, 41.5],
-          [-52, 83.4],
-        ]}
-        mapStyle={mapStyle}
-        mapboxAccessToken={mapboxAccessToken}
-        terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
+        mapStyle="https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
+        // terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
       >
-        <Source
-          id="mapbox-dem"
-          type="raster-dem"
-          url="mapbox://mapbox.mapbox-terrain-dem-v1"
-          tileSize={512}
-          maxzoom={14}
-        ></Source>
-        {/* <Source id="buildings">
-          <Layer {...osmLayer} />
-        </Source> */}
-        {Boolean(osmVisibility) ? <Layer {...osmLayer} /> : null}
-        <Layer {...skyLayer} />
+        {/* {Boolean(true) ? <Layer {...osmLayer} /> : null} */}
+        <Layer {...osmLayer} />
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         <GeocoderControl
@@ -271,4 +269,4 @@ export const Mapbox: FC<{
   );
 };
 
-export default Mapbox;
+export default Maplibre;

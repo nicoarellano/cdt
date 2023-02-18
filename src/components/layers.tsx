@@ -55,8 +55,7 @@ export const Layers = () => {
         {Boolean(torontoPackages.length) &&
           torontoPackages.map((pkg, index) => {
             const key = `${pkg}`;
-            const topic = pkg.topic;
-            console.log(topic);
+            // const topic = pkg.topic;
             const name =
               pkg.name.replaceAll("-", " ").charAt(0).toUpperCase() +
               pkg.name.slice(1);
