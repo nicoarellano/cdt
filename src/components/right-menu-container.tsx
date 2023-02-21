@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Hamburger from "hamburger-react";
@@ -54,12 +54,28 @@ export const RightMenuContainer: FC<Props> = ({
     setShareViewMenuOpen(!shareViewMenuOpen);
   };
 
+  const [city, setCity] = useState<string | null>();
+  const layerHandleClick = (e: any) => {
+    e.preventDefault();
+    const target = e.currentTarget as Element;
+    const index = Number(target.id);
+    setMenuIndex(index);
+    setRightMenuOpen(!rightmenuOpen);
+
+    const currentUrl: string = window.location.href;
+    const url = new URL(currentUrl);
+    let currentCity = url.searchParams.get("city")
+      ? url.searchParams.get("city")
+      : "";
+    setCity(currentCity);
+  };
+
   const rightMenu = [
     <div />,
     <div id="tools-container" title="Tools">
       <ToolsMenu toggleOsm={toggleOsm} />
     </div>,
-    <div id="datasets-container" title="Layers">
+    <div id="datasets-container" title={`${city} Layers`}>
       <Layers />
     </div>,
     <div>
@@ -121,7 +137,7 @@ export const RightMenuContainer: FC<Props> = ({
           <MenuButton
             type={"Layers"}
             Icon={<LayersIcon />}
-            handleClick={menuButtonClick}
+            handleClick={layerHandleClick}
             index={2}
           />
           <MenuButton

@@ -134,7 +134,6 @@ export const Mapbox: FC<{
           context: gl,
           antialias: true,
         });
-
         this.renderer.autoClear = false;
       },
       render: function (gl: any, matrix: any) {
