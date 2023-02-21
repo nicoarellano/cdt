@@ -22,7 +22,9 @@ import { MapStyles } from "./mapbox-styles";
 import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
-import { Upload } from "./upload";
+import { UploadPlaces } from "./uploadPlaces";
+import { UploadObjects } from "./uploadObjects";
+
 
 interface Props {
   updateMapStyle: (arg: string) => void;
@@ -63,7 +65,8 @@ export const RightMenuContainer: FC<Props> = ({
       <Layers />
     </div>,
     <div>
-      <Upload />
+      <UploadPlaces />
+      <UploadObjects />
     </div>,
     <div title="Map Styles">
       <Router>
