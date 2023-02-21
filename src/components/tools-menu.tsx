@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { MenuButton } from "./menu-button";
 
 import BuildingsIcon from "@mui/icons-material/HomeWorkOutlined";
@@ -8,11 +8,11 @@ interface Props {
   toggleOsm: (arg: boolean) => void;
 }
 
-export const ToolsMenu: FC<Props> = (toggleOsm) => {
+export const ToolsMenu: FC<Props> = ({ toggleOsm }) => {
+  const [toggled, setToggled] = useState(true);
   const handleClick = () => {
-    let toggled = false;
-    // toggleOsm(!toggled);
-    console.log("OSM Clicked", toggled);
+    toggleOsm(toggled);
+    setToggled(!toggled);
   };
 
   return (

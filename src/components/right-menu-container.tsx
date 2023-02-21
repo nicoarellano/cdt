@@ -18,10 +18,11 @@ import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import { RightMenuHeader } from "./right-menu-header";
 import { ShareViewWindow } from "./share-view-window";
 import { RightMenu } from "./right-menu";
-import { MapStyles } from "./map-styles";
-import { TorontoPkgsApi } from "./toronto-packages-api";
+import { MapStyles } from "./mapbox-styles";
+import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
+import { Upload } from "./upload";
 
 interface Props {
   updateMapStyle: (arg: string) => void;
@@ -59,13 +60,11 @@ export const RightMenuContainer: FC<Props> = ({
       <ToolsMenu toggleOsm={toggleOsm} />
     </div>,
     <div id="datasets-container" title="Layers">
-      <TorontoPkgsApi />
+      <Layers />
     </div>,
-    <div
-      id="upload-container"
-      title="Upload"
-      className="right-menu-body"
-    ></div>,
+    <div>
+      <Upload />
+    </div>,
     <div title="Map Styles">
       <Router>
         <div id="map-styles-container" title="Map Styles">

@@ -6,6 +6,7 @@
 .pnp.js
 /archive
 /examples
+/wip
 
 # testing
 /coverage
