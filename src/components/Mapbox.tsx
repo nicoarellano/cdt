@@ -38,7 +38,7 @@ export const Mapbox: FC<{
   const currentUrl: string = window.location.href;
   const url = new URL(currentUrl);
 
-  const [viewState, setViewState] = useState({
+  const [viewport, setViewport] = useState({
     longitude: url.searchParams.get("lng")
       ? Number(url.searchParams.get("lng"))
       : -75.69435,
@@ -56,26 +56,10 @@ export const Mapbox: FC<{
       : 0,
   });
 
-  const [province, setProvince] = useState("");
-  const [city, setCity] = useState("");
-  const [place, setPlace] = useState("");
-
-  let currentProvince = url.searchParams.get("province");
-  let currentCity = url.searchParams.get("city");
-  let currentPlace = url.searchParams.get("place");
-
-  useEffect(() => {
-    if (currentProvince) setProvince(currentProvince);
-    if (currentCity) setCity(currentCity);
-    if (currentPlace) setCity(currentPlace);
-  }, [currentProvince, currentCity]);
-
-  // console.log(province + city);
-
-  const [, setSearchParams] = useSearchParams();
+  const [, setSearchParams]: any = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
-    setViewState(event.viewState);
+    setViewport(event.viewState);
     let currentLat = event.viewState.latitude.toString();
     let currentLng = event.viewState.longitude.toString();
     let currentZoom = event.viewState.zoom.toString();
@@ -83,14 +67,16 @@ export const Mapbox: FC<{
     let currentPitch = event.viewState.pitch.toString();
 
     setSearchParams({
-      province: province,
-      city: city,
-      place: place,
       lat: currentLat,
       lng: currentLng,
       zoom: currentZoom,
       bearing: currentBearing,
       pitch: currentPitch,
+      province: url.searchParams.get("province")
+        ? url.searchParams.get("province")
+        : "",
+      city: url.searchParams.get("city") ? url.searchParams.get("city") : "",
+      place: url.searchParams.get("place") ? url.searchParams.get("place") : "",
     });
   };
 
@@ -138,7 +124,7 @@ export const Mapbox: FC<{
         const ifcLoader = new IFCLoader();
         ifcLoader.ifcManager.setWasmPath("../wasm/");
 
-        gltfLoader.load("./ON-Ottawa-cu-masses.glb", (gltf) => {
+        gltfLoader.load("./assets/models/ON-Ottawa-cu-masses.glb", (gltf) => {
           this.scene.add(gltf.scene);
         });
         this.map = map;
@@ -148,7 +134,6 @@ export const Mapbox: FC<{
           context: gl,
           antialias: true,
         });
-
         this.renderer.autoClear = false;
       },
       render: function (gl: any, matrix: any) {
@@ -196,7 +181,7 @@ export const Mapbox: FC<{
     <>
       <Map
         id="my-map"
-        {...viewState}
+        {...viewport}
         onMove={onMoveChange}
         fog={{
           range: [-1, 15],
@@ -236,16 +221,19 @@ export const Mapbox: FC<{
           position="top-left"
           country="CA"
         />
-        <UseOpenTorontoMarkers
-          resourceId="12ef161c-1553-43f6-8180-fed700e42912"
-          limit={50}
-          color="blue"
-        />
-        <UseOpenTorontoMarkers
+        {Boolean(url.searchParams.get("city") === "Toronto") ? (
+          <UseOpenTorontoMarkers
+            resourceId="12ef161c-1553-43f6-8180-fed700e42912"
+            limit={200}
+            color="blue"
+          />
+        ) : null}
+
+        {/* <UseOpenTorontoMarkers
           resourceId="6c74cc93-3814-4970-84ab-0755e845b25f"
           limit={50}
           color="yellow"
-        />
+        /> */}
       </Map>
     </>
   );
