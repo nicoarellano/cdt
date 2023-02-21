@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react";
-import { useFetchApi } from "../utils/useFetchApi";
+import { useState } from "react";
 import { torontoPackages } from "../assets/datasets/toronto-selected-packages";
-import AddIcon from "@mui/icons-material/AddRounded";
 
-import ArrowDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import AddIcon from "@mui/icons-material/AddRounded";
 
 import MarkerIcon from "@mui/icons-material/PlaceOutlined";
 import LineIcon from "@mui/icons-material/PolylineOutlined";
 import PolygonIcon from "@mui/icons-material/CategoryOutlined";
 import UnknownIcon from "@mui/icons-material/HelpOutlineOutlined";
-
-import { useResources } from "../utils/useResources";
 
 // import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 

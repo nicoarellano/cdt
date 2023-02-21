@@ -1,29 +1,11 @@
-import { useEffect, useState } from "react";
-import { useControl, Marker, MarkerProps, ControlPosition } from "react-map-gl";
-import MapboxGeocoder, { GeocoderOptions } from "@mapbox/mapbox-gl-geocoder";
+import { useState } from "react";
+import { useControl, Marker } from "react-map-gl";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { useSearchParams } from "react-router-dom";
-import { ViewStateChangeEvent } from "react-map-gl";
-
-// type GeocoderControlProps = Omit<
-//   GeocoderOptions,
-//   "accessToken" | "mapboxgl" | "marker"
-// > & {
-//   mapboxAccessToken: any;
-//   marker?: boolean | Omit<MarkerProps, "longitude" | "latitude">;
-
-//   position: ControlPosition;
-
-//   onLoading?: (e: object) => void;
-//   onResults?: (e: object) => void;
-//   onResult?: (e: object) => void;
-//   onError?: (e: object) => void;
-// };
 
 export default function GeocoderControl(props: any) {
   const [marker, setMarker]: any = useState(null);
-
-  const [place, setPlace] = useState();
 
   const [, setSearchParams] = useSearchParams();
 
@@ -37,20 +19,15 @@ export default function GeocoderControl(props: any) {
       ctrl.on("loading", props.onLoading);
       ctrl.on("results", props.onResults);
       ctrl.on("result", (evt) => {
+        const placeObj = { province: "", city: "", place: "" };
         props.onResult(evt);
         const { result } = evt;
-        setPlace(result.text);
-        setSearchParams({ place: result.text });
-        const context = result.context;
-
-        context.forEach((c: any) => {
-          const id = c.id;
-          if (id.includes("region")) setSearchParams({ province: c.text });
-          if (id.includes("place")) {
-            console.log(c);
-            setSearchParams({ city: c.text });
-          }
-        });
+        const { place_name } = result;
+        const placeArray = place_name.split(", ").reverse();
+        if (placeArray[1]) placeObj.province = placeArray[1];
+        if (placeArray[2]) placeObj.city = placeArray[2];
+        if (placeArray[4]) placeObj.place = result.text.replaceAll(" ", "_");
+        setSearchParams(placeObj);
 
         const location =
           result &&
