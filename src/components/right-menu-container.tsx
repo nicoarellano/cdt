@@ -18,7 +18,7 @@ import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import { RightMenuHeader } from "./right-menu-header";
 import { ShareViewWindow } from "./share-view-window";
 import { RightMenu } from "./right-menu";
-import { MapStyles } from "./map-styles";
+import { MapStyles } from "./mapbox-styles";
 import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";

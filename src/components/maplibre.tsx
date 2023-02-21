@@ -3,26 +3,20 @@ import { useSearchParams } from "react-router-dom";
 
 import Map, {
   Source,
-  Layer,
   NavigationControl,
   GeolocateControl,
   ViewStateChangeEvent,
+  useMap,
 } from "react-map-gl";
-
-import type { SkyLayer } from "react-map-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import maplibregl from "maplibre-gl";
+import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
-import mapboxgl, {
-  LngLatLike,
-  MercatorCoordinate,
-  AnyLayer,
-  FillExtrusionLayer,
-} from "mapbox-gl";
+import mapboxgl, { LngLatLike, MercatorCoordinate } from "mapbox-gl";
 
-import GeocoderControl from "./geocoder-control";
+// import GeocoderControl from "./geocoder-control";
 
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
 
@@ -37,55 +31,15 @@ import {
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { IFCLoader } from "web-ifc-three";
-
-const skyLayer: SkyLayer = {
-  id: "sky",
-  type: "sky",
-  paint: {
-    "sky-type": "atmosphere",
-    "sky-atmosphere-sun": [0.0, 0.0],
-    "sky-atmosphere-sun-intensity": 15,
-  },
-};
-
-// LOAD OSM BUILDING 🏢
-const osmLayer: FillExtrusionLayer = {
-  id: "add-3d-buildings",
-  source: "composite",
-  "source-layer": "building",
-  filter: ["==", "extrude", "true"],
-  type: "fill-extrusion",
-  minzoom: 15,
-  paint: {
-    "fill-extrusion-color": "#aaa",
-    // Use an 'interpolate'
-    "fill-extrusion-height": [
-      "interpolate",
-      ["linear"],
-      ["zoom"],
-      15,
-      0,
-      15.05,
-      ["get", "height"],
-    ],
-    "fill-extrusion-base": [
-      "interpolate",
-      ["linear"],
-      ["zoom"],
-      15,
-      0,
-      15.05,
-      ["get", "min_height"],
-    ],
-    "fill-extrusion-opacity": 0.9,
-  },
-};
+import { OpenBuildings } from "./openBuildings";
+import { Sky } from "./skyLayer";
+import { Osm } from "./osmLayer";
 
 export const Maplibre: FC<{
   mapboxAccessToken: string | undefined;
-  mapStyle: string;
   osmVisibility: boolean;
-}> = ({ mapboxAccessToken, mapStyle, osmVisibility }) => {
+  mapStyle?: string;
+}> = ({ mapboxAccessToken, osmVisibility, mapStyle }) => {
   const mapRef: any = useRef();
 
   // Get shared position
@@ -227,33 +181,118 @@ export const Maplibre: FC<{
     setCustomlayer(customLayer);
   }, []);
 
+  let geocoder_api = {
+    forwardGeocode: async (config: any) => {
+      const features = [];
+      try {
+        let request =
+          "https://nominatim.openstreetmap.org/search?q=" +
+          config.query +
+          "&format=geojson&polygon_geojson=1&addressdetails=1";
+        const response = await fetch(request);
+        const geojson = await response.json();
+        for (let feature of geojson.features) {
+          let center = [
+            feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
+            feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
+          ];
+          let point = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: center,
+            },
+            place_name: feature.properties.display_name,
+            properties: feature.properties,
+            text: feature.properties.display_name,
+            place_type: ["place"],
+            center: center,
+          };
+          features.push(point);
+        }
+      } catch (e) {
+        console.error(`Failed to forwardGeocode with error: ${e}`);
+      }
+
+      return {
+        features: features,
+      };
+    },
+  };
+
   return (
     <>
       <Map
         mapLib={maplibregl}
         {...viewState}
         onMove={onMoveChange}
-        // fog={{
-        //   range: [-1, 15],
-        //   "horizon-blend": 0.05,
-        //   color: "white",
-        // }}
         ref={mapRef}
+        maxPitch={85}
+        mapStyle="https://api.maptiler.com/maps/bright/style.json?key=q54cDjzBUzfxYseOWe5v"
+        // mapStyle={`https://api.maptiler.com/maps/${mapStyle}/style.json?key=q54cDjzBUzfxYseOWe5v`}
+
         onLoad={(map) => {
           map.target.addLayer(_customLayer);
+          let layers = map.target.getStyle().layers;
+
+          // map.target.addControl(
+          //   new MaplibreGeocoder(geocoder_api, {
+          //     maplibregl: maplibregl,
+          //   })
+          // );
+
+          let labelLayerId;
+          for (var i = 0; i < layers.length; i++) {
+            if (layers[i].type === "symbol") {
+              labelLayerId = layers[i].id;
+              break;
+            }
+          }
+
+          map.target.addLayer(
+            {
+              id: "3d-buildings",
+              source: "openmaptiles",
+              "source-layer": "building",
+              filter: ["==", "extrude", "true"],
+              type: "fill-extrusion",
+              minzoom: 15,
+              paint: {
+                "fill-extrusion-color": "#f00",
+                "fill-extrusion-height": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  15,
+                  0,
+                  15.05,
+                  ["get", "height"],
+                ],
+                "fill-extrusion-base": [
+                  "interpolate",
+                  ["linear"],
+                  ["zoom"],
+                  15,
+                  0,
+                  15.05,
+                  ["get", "min_height"],
+                ],
+                "fill-extrusion-opacity": 0.6,
+              },
+            },
+            labelLayerId
+          );
         }}
-        maxPitch={85}
-        mapStyle="https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL"
-        // terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
       >
-        {/* {Boolean(true) ? <Layer {...osmLayer} /> : null} */}
-        <Layer {...osmLayer} />
+        {/* <OpenBuildings /> */}
+        {Boolean(osmVisibility) ? <OpenBuildings /> : null}
+        {/* {Boolean(osmVisibility) ? <Osm /> : null} */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
-        <GeocoderControl
+        {/* <GeocoderControl
           mapboxAccessToken={mapboxAccessToken}
           position="top-left"
-        />
+        /> */}
         <UseOpenTorontoMarkers
           resourceId="12ef161c-1553-43f6-8180-fed700e42912"
           limit={50}
@@ -268,5 +307,3 @@ export const Maplibre: FC<{
     </>
   );
 };
-
-export default Maplibre;

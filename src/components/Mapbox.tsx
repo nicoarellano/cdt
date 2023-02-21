@@ -3,27 +3,15 @@ import { useSearchParams } from "react-router-dom";
 
 import Map, {
   Source,
-  Layer,
   NavigationControl,
   GeolocateControl,
   ViewStateChangeEvent,
 } from "react-map-gl";
 
-import type { SkyLayer } from "react-map-gl";
-
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import mapboxgl, {
-  LngLatLike,
-  MercatorCoordinate,
-  AnyLayer,
-  FillExtrusionLayer,
-} from "mapbox-gl";
-
+import mapboxgl, { LngLatLike, MercatorCoordinate } from "mapbox-gl";
 import GeocoderControl from "./geocoder-control";
-
-import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
-
 import {
   PerspectiveCamera,
   Scene,
@@ -32,43 +20,18 @@ import {
   Matrix4,
   WebGLRenderer,
 } from "three";
-
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { IFCLoader } from "web-ifc-three";
-import { FillPaintProps } from "maplibre-gl";
 
-const skyLayer: SkyLayer = {
-  id: "sky",
-  type: "sky",
-  paint: {
-    "sky-type": "atmosphere",
-    "sky-atmosphere-sun": [0.0, 0.0],
-    "sky-atmosphere-sun-intensity": 15,
-  },
-};
-
-// LOAD OSM BUILDING 🏢
-
-const osmLayer: FillExtrusionLayer = {
-  id: "add-3d-buildings",
-  type: "fill-extrusion",
-  source: "composite",
-  "source-layer": "building",
-  filter: ["==", "extrude", "true"],
-  minzoom: 14,
-  paint: {
-    "fill-extrusion-color": "#aaa",
-    "fill-extrusion-height": ["get", "height"],
-    "fill-extrusion-base": ["get", "min_height"],
-    "fill-extrusion-opacity": 0.9,
-  },
-};
+import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
+import { Osm } from "./osmLayer";
+import { Sky } from "./skyLayer";
 
 export const Mapbox: FC<{
   mapboxAccessToken: string | undefined;
-  mapStyle: string;
   osmVisibility: boolean;
-}> = ({ mapboxAccessToken, mapStyle, osmVisibility }) => {
+  mapStyle: string;
+}> = ({ mapboxAccessToken, osmVisibility, mapStyle }) => {
   const mapRef: any = useRef();
 
   // Get shared position
@@ -93,6 +56,22 @@ export const Mapbox: FC<{
       : 0,
   });
 
+  const [province, setProvince] = useState("");
+  const [city, setCity] = useState("");
+  const [place, setPlace] = useState("");
+
+  let currentProvince = url.searchParams.get("province");
+  let currentCity = url.searchParams.get("city");
+  let currentPlace = url.searchParams.get("place");
+
+  useEffect(() => {
+    if (currentProvince) setProvince(currentProvince);
+    if (currentCity) setCity(currentCity);
+    if (currentPlace) setCity(currentPlace);
+  }, [currentProvince, currentCity]);
+
+  // console.log(province + city);
+
   const [, setSearchParams] = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
@@ -104,6 +83,9 @@ export const Mapbox: FC<{
     let currentPitch = event.viewState.pitch.toString();
 
     setSearchParams({
+      province: province,
+      city: city,
+      place: place,
       lat: currentLat,
       lng: currentLng,
       zoom: currentZoom,
@@ -234,7 +216,7 @@ export const Mapbox: FC<{
           [-141.1, 41.5],
           [-52, 83.4],
         ]}
-        mapStyle={mapStyle}
+        mapStyle={`mapbox://styles/mapbox/${mapStyle}`}
         mapboxAccessToken={mapboxAccessToken}
         terrain={{ source: "mapbox-dem", exaggeration: 1.5 }}
       >
@@ -245,16 +227,14 @@ export const Mapbox: FC<{
           tileSize={512}
           maxzoom={14}
         ></Source>
-        {/* <Source id="buildings">
-          <Layer {...osmLayer} />
-        </Source> */}
-        {Boolean(osmVisibility) ? <Layer {...osmLayer} /> : null}
-        <Layer {...skyLayer} />
+        {Boolean(osmVisibility) ? <Osm /> : null}
+        <Sky />
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         <GeocoderControl
           mapboxAccessToken={mapboxAccessToken}
           position="top-left"
+          country="CA"
         />
         <UseOpenTorontoMarkers
           resourceId="12ef161c-1553-43f6-8180-fed700e42912"
@@ -270,5 +250,3 @@ export const Mapbox: FC<{
     </>
   );
 };
-
-export default Mapbox;

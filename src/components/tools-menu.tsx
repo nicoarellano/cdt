@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const ToolsMenu: FC<Props> = ({ toggleOsm }) => {
-  const [toggled, setToggled] = useState(false);
+  const [toggled, setToggled] = useState(true);
   const handleClick = () => {
     toggleOsm(toggled);
     setToggled(!toggled);

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Mapbox } from "./mapbox";
-// import Maplibre from "./maplibre";
+// import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
@@ -27,16 +27,14 @@ export const Main: FC = () => {
 
   // Set map style 🗺️
 
-  const [mapStyle, setMapStyle] = useState<string>(
-    "mapbox://styles/mapbox/satellite-streets-v11"
-  );
+  const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
 
   const updateMapStyle = (mapStyle: string): void => {
     setMapStyle(mapStyle);
   };
 
   // tooggle OSM 🏢
-  const [osmVisibility, setOsmVisibility] = useState<boolean>(false);
+  const [osmVisibility, setOsmVisibility] = useState<boolean>(true);
 
   const toggleOsm = (osmVisibility: boolean): void => {
     setOsmVisibility(osmVisibility);
@@ -57,7 +55,7 @@ export const Main: FC = () => {
           {/* <Maplibre
             mapboxAccessToken={token}
             mapStyle={mapStyle}
-            osmVisibility={true}
+            osmVisibility={osmVisibility}
           /> */}
           <Mapbox
             mapboxAccessToken={token}
