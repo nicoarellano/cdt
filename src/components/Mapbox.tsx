@@ -6,6 +6,7 @@ import Map, {
   NavigationControl,
   GeolocateControl,
   ViewStateChangeEvent,
+  FullscreenControl,
 } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -26,6 +27,7 @@ import { IFCLoader } from "web-ifc-three";
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
 import { Osm } from "./osmLayer";
 import { Sky } from "./skyLayer";
+import { TopBar } from "./topBar";
 
 export const Mapbox: FC<{
   mapboxAccessToken: string | undefined;
@@ -215,7 +217,11 @@ export const Mapbox: FC<{
         {Boolean(osmVisibility) ? <Osm /> : null}
         <Sky />
         <NavigationControl position="bottom-left" visualizePitch={true} />
-        <GeolocateControl position="bottom-left" />
+        <GeolocateControl
+          position="bottom-left"
+          trackUserLocation={true}
+          showUserHeading={true}
+        />
         <GeocoderControl
           mapboxAccessToken={mapboxAccessToken}
           position="top-left"

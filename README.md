@@ -1,3 +1,16 @@
+<p align="center">
+  <a href="https://canadasdigitaltwin.ca/">CIMS lab</a>
+  |
+  <a href="https://canadasdigitaltwin.ca/">Imagine Canada's Digital Twin</a>
+  |
+  <a href=https://cimsprojects.ca/CDT>CDT Demo</a>
+  |
+  <a href=https://nicoarellano.github.io/cdt/></a>
+</p>
+
+<img src="public/images/icdt.gif">
+<h1> Canada's Digital Twin <img src="public/images/icdt-logo.png" width="32"></h1>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
