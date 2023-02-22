@@ -23,8 +23,7 @@ import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
 import { Upload } from "./upload";
-
-
+import { InfoMenu } from "./info-menu";
 
 interface Props {
   updateMapStyle: (arg: string) => void;
@@ -81,7 +80,7 @@ export const RightMenuContainer: FC<Props> = ({
       <Layers />
     </div>,
     <div id="upload-forms" title="Uploads">
-      <Upload/>
+      <Upload />
     </div>,
     <div title="Map Styles">
       <Router>
@@ -93,11 +92,9 @@ export const RightMenuContainer: FC<Props> = ({
     <div id="sign-in-container" title="Authentication">
       <Auth />
     </div>,
-    <div
-      id="info-container"
-      title="Information"
-      className="right-menu-body"
-    ></div>,
+    <div id="info-container" title="Information">
+      <InfoMenu />
+    </div>,
     <div
       id="settings-container"
       title="Settings"
