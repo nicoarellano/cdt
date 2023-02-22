@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useState, FC } from "react";
+import AddIcon from "@mui/icons-material/AddRounded";
+import { MenuButton } from "./menu-button";
+
+interface Props {
+  toggleOsm: (arg: boolean) => void;
+}
 
 export const UploadObjects = () => {
 
@@ -11,7 +17,7 @@ export const UploadObjects = () => {
   const [file, setFile] = useState("");
 
   const clickHandler = () => {
-    console.log("Object entered - ", name, ID);
+    alert(`Object entered ${name}, ${ID}`);
     setName("");
     setID("");
     setLatitude("");
@@ -88,18 +94,18 @@ export const UploadObjects = () => {
             }
           }
         ></input>
-        </label>
-        <label>
+      </label>
+      <label>
             Model file: 
             <input
-            value={file}
-            onChange={
-                (event) => {
-                setFile(event.target.value)
-                }
-            }
+              value={file}
+              onChange={
+                  (event) => {
+                  setFile(event.target.value)
+                  }
+              }
             ></input>
-        </label>
+      </label>
       <button onClick={clickHandler}>Upload object</button>
     </form>
   );

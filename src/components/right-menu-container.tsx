@@ -22,8 +22,8 @@ import { MapStyles } from "./mapbox-styles";
 import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
-import { UploadPlaces } from "./uploadPlaces";
-import { UploadObjects } from "./uploadObjects";
+import { Upload } from "./upload";
+
 
 
 interface Props {
@@ -37,7 +37,7 @@ export const RightMenuContainer: FC<Props> = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
 
-  // console.log(mapStyleClickEvent);
+  //console.log(mapStyleClickEvent);
 
   const [menuIndex, setMenuIndex] = useState(0);
 
@@ -64,9 +64,8 @@ export const RightMenuContainer: FC<Props> = ({
     <div id="datasets-container" title="Layers">
       <Layers />
     </div>,
-    <div>
-      <UploadPlaces />
-      <UploadObjects />
+    <div id="upload-forms" title="Uploads">
+      <Upload/>
     </div>,
     <div title="Map Styles">
       <Router>

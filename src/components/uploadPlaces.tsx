@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, FC } from "react";
+import AddIcon from "@mui/icons-material/AddRounded";
+import { MenuButton } from "./menu-button";
 
 export const UploadPlaces = () => {
 
@@ -7,7 +9,7 @@ export const UploadPlaces = () => {
   const [area, setArea] = useState("");
 
   const clickHandler = () => {
-    console.log("Place entered - ", name, ID, area);
+    alert(`Place entered ${name}, ${ID}, ${area}`);
     setName("");
     setID("");
     setArea("");
