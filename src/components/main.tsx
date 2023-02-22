@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Mapbox } from "./Mapbox";
+import { Mapbox } from "./mapbox";
 // import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
