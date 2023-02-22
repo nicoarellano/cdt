@@ -9,7 +9,7 @@
 </p>
 
 <img src="public/images/icdt.gif">
-<h1> Canada's Digital Twin <img src="public/icdt-logo.png" width="32"></h1>
+<h1><img src="public/icdt-logo.png" width="40">Canada's Digital Twin</h1>
 
 # 🧭 Mission
 

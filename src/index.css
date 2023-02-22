@@ -223,6 +223,14 @@ h5 {
     margin: 0 0.8rem;
 }
 
+#info-menu {
+    max-width: 55vw;
+    display: flex;
+    flex-direction: column;
+    margin: 0 1rem;
+    gap: 1rem;
+}
+
 .right-menu-body {
     overflow: auto;
     padding: 2.5rem 0 0 1.5rem;
