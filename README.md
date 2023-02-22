@@ -9,7 +9,21 @@
 </p>
 
 <img src="public/images/icdt.gif">
-<h1> Canada's Digital Twin <img src="public/images/icdt-logo.png" width="32"></h1>
+<h1> Canada's Digital Twin <img src="public/icdt-logo.png" width="32"></h1>
+
+# 🧭 Mission
+
+Imagining Canada’s Digital Twin is an **exploration** of the **idea** of a digital twin for Canada.
+Our goal is not to resolve the question of a digital twin for Canada, but to determine its feasibility.
+
+# 🔭 Vision
+
+What we are developing is a national, inclusive, and multidisciplinary research consortium to begin developing the technical, cultural, and ethical framework for building Canada’s digital twin.
+
+# ⚖️ Values
+
+- prioritizing equity and inclusion by supporting the largest group of contributors to the AECOO (architecture, engineering, construction, owner operator), **small to medium enterprises (SMEs)**
+- using open (FLOSS) standards and technologies as often as possible
 
 # Getting Started with Create React App
 
