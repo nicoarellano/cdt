@@ -2510,6 +2510,16 @@
   resolved "https://registry.yarnpkg.com/@mapbox/whoots-js/-/whoots-js-3.1.0.tgz#497c67a1cef50d1a2459ba60f315e448d2ad87fe"
   integrity sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==
 
+"@maplibre/maplibre-gl-geocoder@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-geocoder/-/maplibre-gl-geocoder-1.5.0.tgz#6b413525b361b4759df0fd17429e12b78f03b3a4"
+  integrity sha512-PsAbV7WFIOu5QYZne95FiXoV7AV1/6ULMjQxgInhZ5DdB0hDLjciQPegnyDgkzI8JfeqoUMZVS/MglZnSZYhyQ==
+  dependencies:
+    lodash.debounce "^4.0.6"
+    subtag "^0.5.0"
+    suggestions-list "^0.0.2"
+    xtend "^4.0.1"
+
 "@math.gl/core@3.6.3", "@math.gl/core@^3.5.0", "@math.gl/core@^3.5.1", "@math.gl/core@^3.6.2":
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/@math.gl/core/-/core-3.6.3.tgz#a6bf796ed421093099749d609de8d99a3ac20a53"
@@ -3056,15 +3066,6 @@
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
-
-"@types/@maplibre/maplibre-gl-geocoder":
-  version "1.5.0"
-  resolved "https://codeload.github.com/maplibre/maplibre-gl-geocoder/tar.gz/e775c9ddb58526c589e3d4f3e65f21515f6d6ea4"
-  dependencies:
-    lodash.debounce "^4.0.6"
-    subtag "^0.5.0"
-    suggestions-list "^0.0.2"
-    xtend "^4.0.1"
 
 "@types/aria-query@^5.0.1":
   version "5.0.1"

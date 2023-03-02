@@ -15,7 +15,7 @@ import maplibregl from "maplibre-gl";
 
 import mapboxgl, { LngLatLike, MercatorCoordinate } from "mapbox-gl";
 
-// import MaplibreGeocoder from "@types/@maplibre/maplibre-gl-geocoder";
+// import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 // import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
@@ -32,10 +32,6 @@ import {
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { IFCLoader } from "web-ifc-three";
-import { OpenBuildings } from "./openBuildings";
-import { Hillshade } from "../../archive/hillshadeLayer";
-import { Google } from "./google-layer";
-import { Sky } from "./skyLayer";
 
 const isMobile: boolean =
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -43,9 +39,10 @@ const isMobile: boolean =
   );
 
 export const Maplibre: FC<{
+  mapboxAccessToken: string | undefined;
   osmVisibility: boolean;
-  mapStyle?: string;
-}> = ({ osmVisibility, mapStyle }) => {
+  mapStyle: string;
+}> = ({ mapboxAccessToken, osmVisibility, mapStyle }) => {
   const mapRef: any = useRef();
 
   // Get shared position
@@ -203,45 +200,6 @@ export const Maplibre: FC<{
     setCustomlayer(customLayer);
   }, []);
 
-  let maplibreGeocoder = {
-    forwardGeocode: async (config: any) => {
-      const features = [];
-      try {
-        let request =
-          "https://nominatim.openstreetmap.org/search?q=" +
-          config.query +
-          "&format=geojson&polygon_geojson=1&addressdetails=1";
-        const response = await fetch(request);
-        const geojson = await response.json();
-        for (let feature of geojson.features) {
-          let center = [
-            feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
-            feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
-          ];
-          let point = {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: center,
-            },
-            place_name: feature.properties.display_name,
-            properties: feature.properties,
-            text: feature.properties.display_name,
-            place_type: ["place"],
-            center: center,
-          };
-          features.push(point);
-        }
-      } catch (e) {
-        console.error(`Failed to forwardGeocode with error: ${e}`);
-      }
-
-      return {
-        features: features,
-      };
-    },
-  };
-
   return (
     <>
       <Map
@@ -253,8 +211,13 @@ export const Maplibre: FC<{
           map.target.addLayer(_customLayer);
         }}
         maxPitch={60}
-        mapStyle="./assets/map/streets.json" //Streets
-        // mapStyle="./assets/map/satellite.json" //Google Satellite
+        minZoom={3}
+        maxBounds={[
+          [-141.1, 41.5],
+          [-52, 83.4],
+        ]}
+        mapStyle={`./assets/map/${mapStyle}.json`} //Streets
+        // mapStyle="./assets/map/satellite}.json" //Google Satellite
 
         terrain={{ source: "terrainSource", exaggeration: 0.1 }}
       >
@@ -264,12 +227,7 @@ export const Maplibre: FC<{
           url="./assets/terrain/terrain.json"
           tileSize={256}
         ></Source>
-
-        {/* <Google /> */}
-        {/* <OpenBuildings /> */}
-        {/* <Sky /> */}
         {/* {Boolean(osmVisibility) ? <OpenBuildings /> : null} */}
-        {/* {Boolean(osmVisibility) ? <Osm /> : null} */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
         {/* <GeocoderControl

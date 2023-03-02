@@ -27,7 +27,10 @@ export const Main: FC = () => {
 
   // Set map style 🗺️
 
-  const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
+  // For Maplibre
+  const [mapStyle, setMapStyle] = useState<string>("streets");
+  // For Mapbox
+  // const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
 
   const updateMapStyle = (mapStyle: string): void => {
     setMapStyle(mapStyle);
@@ -52,7 +55,11 @@ export const Main: FC = () => {
       />
       {Boolean(user) ? (
         <Router>
-          <Maplibre mapStyle={mapStyle} osmVisibility={osmVisibility} />
+          <Maplibre
+            mapboxAccessToken={token}
+            mapStyle={mapStyle}
+            osmVisibility={osmVisibility}
+          />
           {/* <Mapbox
             mapboxAccessToken={token}
             mapStyle={mapStyle}
