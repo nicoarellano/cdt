@@ -6,7 +6,6 @@ import Map, {
   NavigationControl,
   GeolocateControl,
   ViewStateChangeEvent,
-  FullscreenControl,
 } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -27,7 +26,6 @@ import { IFCLoader } from "web-ifc-three";
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
 import { Osm } from "./osmLayer";
 import { Sky } from "./skyLayer";
-import { TopBar } from "./topBar";
 
 export const Mapbox: FC<{
   mapboxAccessToken: string | undefined;
@@ -41,12 +39,6 @@ export const Mapbox: FC<{
   const url = new URL(currentUrl);
 
   const [viewport, setViewport] = useState({
-    longitude: url.searchParams.get("lng")
-      ? Number(url.searchParams.get("lng"))
-      : -75.69435,
-    latitude: url.searchParams.get("lat")
-      ? Number(url.searchParams.get("lat"))
-      : 45.38435,
     zoom: url.searchParams.get("zoom")
       ? Number(url.searchParams.get("zoom"))
       : 11,
@@ -56,24 +48,30 @@ export const Mapbox: FC<{
     pitch: url.searchParams.get("pitch")
       ? Number(url.searchParams.get("pitch"))
       : 0,
+    longitude: url.searchParams.get("lng")
+      ? Number(url.searchParams.get("lng"))
+      : -75.69435,
+    latitude: url.searchParams.get("lat")
+      ? Number(url.searchParams.get("lat"))
+      : 45.38435,
   });
 
   const [, setSearchParams]: any = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
     setViewport(event.viewState);
-    let currentLat = event.viewState.latitude.toString();
-    let currentLng = event.viewState.longitude.toString();
     let currentZoom = event.viewState.zoom.toString();
     let currentBearing = event.viewState.bearing.toString();
     let currentPitch = event.viewState.pitch.toString();
+    let currentLat = event.viewState.latitude.toString();
+    let currentLng = event.viewState.longitude.toString();
 
     setSearchParams({
-      lat: currentLat,
-      lng: currentLng,
       zoom: currentZoom,
       bearing: currentBearing,
       pitch: currentPitch,
+      lat: currentLat,
+      lng: currentLng,
       province: url.searchParams.get("province")
         ? url.searchParams.get("province")
         : "",
@@ -182,7 +180,7 @@ export const Mapbox: FC<{
   return (
     <>
       <Map
-        id="my-map"
+        id="mymap"
         {...viewport}
         onMove={onMoveChange}
         fog={{

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Mapbox } from "./mapbox";
-// import { Maplibre } from "./maplibre";
+import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
@@ -52,16 +52,12 @@ export const Main: FC = () => {
       />
       {Boolean(user) ? (
         <Router>
-          {/* <Maplibre
+          <Maplibre mapStyle={mapStyle} osmVisibility={osmVisibility} />
+          {/* <Mapbox
             mapboxAccessToken={token}
             mapStyle={mapStyle}
             osmVisibility={osmVisibility}
           /> */}
-          <Mapbox
-            mapboxAccessToken={token}
-            mapStyle={mapStyle}
-            osmVisibility={osmVisibility}
-          />
         </Router>
       ) : (
         <div className="message">

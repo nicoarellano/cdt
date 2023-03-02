@@ -2,7 +2,7 @@ import { Layer } from "react-map-gl";
 import type { SkyLayer } from "react-map-gl";
 
 export const Sky = () => {
-  const skyLayer: SkyLayer = {
+  const skyLayer: any = {
     id: "sky",
     type: "sky",
     paint: {
