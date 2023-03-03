@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { Mapbox } from "./mapbox";
-// import { Maplibre } from "./maplibre";
+// import { Mapbox } from "./mapbox";
+import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { TopBar } from "./topBar";
@@ -27,9 +27,13 @@ export const Main: FC = () => {
 
   // Set map style 🗺️
 
-  const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
+  // For Maplibre
+  const [mapStyle, setMapStyle] = useState<string>("satellite");
+  // For Mapbox
+  // const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
 
   const updateMapStyle = (mapStyle: string): void => {
+    console.log(mapStyle);
     setMapStyle(mapStyle);
   };
 
@@ -52,16 +56,16 @@ export const Main: FC = () => {
       />
       {Boolean(user) ? (
         <Router>
-          {/* <Maplibre
-            mapboxAccessToken={token}
-            mapStyle={mapStyle}
-            osmVisibility={osmVisibility}
-          /> */}
-          <Mapbox
+          <Maplibre
             mapboxAccessToken={token}
             mapStyle={mapStyle}
             osmVisibility={osmVisibility}
           />
+          {/* <Mapbox
+            mapboxAccessToken={token}
+            mapStyle={mapStyle}
+            osmVisibility={osmVisibility}
+          /> */}
         </Router>
       ) : (
         <div className="message">

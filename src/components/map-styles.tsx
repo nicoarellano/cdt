@@ -15,11 +15,10 @@ export const MapStyles: FC<Props> = ({ updateMapStyle }) => {
 
   return (
     <nav id="map-styles" className="right-menu-body" onClick={handleMouseEvent}>
-      <MapStyle type={"OSM Bright"} id={"osm-bright"} />
-      <MapStyle type={"Positron"} id={"position"} />
+      <MapStyle type={"Satellite"} id={"satellite"} />
+      <MapStyle type={"Streets"} id={"streets"} />
       <MapStyle type={"Light"} id={"light"} />
-      <MapStyle type={"Dark Matter"} id={"dark-matter"} />
-      <MapStyle type={"Klokantech Basic"} id={"klokantech-basic"} />
+      <MapStyle type={"Dark"} id={"dark"} />
     </nav>
   );
 };

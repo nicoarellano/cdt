@@ -1,4 +1,5 @@
-import { useState, FC } from "react";
+import { useState } from "react";
+
 import { torontoPackages } from "../assets/datasets/toronto-selected-packages";
 
 import AddIcon from "@mui/icons-material/AddRounded";

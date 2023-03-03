@@ -8,7 +8,7 @@ export const MapStyle: FC<{ type: string; id: string }> = ({ type, id }) => {
       </h3>
       <img
         id={id}
-        src={`./images/${type}.png`}
+        src={`./assets/map/${type}.png`}
         alt={`${type} style`}
         height="55px"
         width="55"

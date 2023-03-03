@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Hamburger from "hamburger-react";
@@ -18,7 +18,7 @@ import SettingsIcon from "@mui/icons-material/SettingsOutlined";
 import { RightMenuHeader } from "./right-menu-header";
 import { ShareViewWindow } from "./share-view-window";
 import { RightMenu } from "./right-menu";
-import { MapStyles } from "./mapbox-styles";
+import { MapStyles } from "./map-styles";
 import { Layers } from "./layers";
 import { Auth } from "./auth/auth";
 import { ToolsMenu } from "./tools-menu";
@@ -35,8 +35,6 @@ export const RightMenuContainer: FC<Props> = ({
   toggleOsm,
 }) => {
   const [isOpen, setOpen] = useState(false);
-
-  //console.log(mapStyleClickEvent);
 
   const [menuIndex, setMenuIndex] = useState(0);
 
@@ -122,6 +120,7 @@ export const RightMenuContainer: FC<Props> = ({
             <header onClick={menuButtonClick}>
               <RightMenuHeader title={currentMenuElement.props.title} />
             </header>
+
             {currentMenuElement}
           </RightMenu>
         </aside>
