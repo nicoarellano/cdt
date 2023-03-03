@@ -61,11 +61,6 @@ export const Main: FC = () => {
             mapStyle={mapStyle}
             osmVisibility={osmVisibility}
           />
-          {/* <Mapbox
-            mapboxAccessToken={token}
-            mapStyle={mapStyle}
-            osmVisibility={osmVisibility}
-          /> */}
         </Router>
       ) : (
         <div className="message">

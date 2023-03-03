@@ -25,10 +25,13 @@ import {
   PerspectiveCamera,
   Scene,
   DirectionalLight,
+  AmbientLight,
   Vector3,
   Matrix4,
   WebGLRenderer,
   Group,
+  Box3,
+  AxesHelper,
 } from "three";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -119,29 +122,46 @@ export const Maplibre: FC<{
       onAdd: function (map: any, gl: any) {
         this.camera = new PerspectiveCamera();
         this.scene = new Scene();
-        const directionalLight = new DirectionalLight(0xffffff);
-        directionalLight.position.set(0, -70, 100).normalize();
+
+        const axes = new AxesHelper(10);
+        axes.renderOrder = 3;
+        this.scene.add(axes);
+
+        // create three.js lights to illuminate the model
+        const lightColor = 0xffffff;
+        const ambientLight = new AmbientLight(lightColor, 0.2);
+        this.scene.add(ambientLight);
+
+        const directionalLight = new DirectionalLight(lightColor, 0.9);
+        directionalLight.position.set(0, -700, 600).normalize();
         this.scene.add(directionalLight);
 
-        const directionalLight2 = new DirectionalLight(0xffffff);
-        directionalLight2.position.set(0, 70, 100).normalize();
+        const directionalLight2 = new DirectionalLight(lightColor, 0.9);
+        directionalLight2.position.set(0, 700, 600).normalize();
         this.scene.add(directionalLight2);
 
         // Load multiple models -----------------------
-        const group = new Group();
-        group.name = `cdc-buildings`;
         const gltfLoader = new GLTFLoader();
         const objects = canada.provinces.ON.cities.Ottawa.places.CDC.objects;
-        let objectGltf, categories: any;
+        let categories: any;
         if (isMobile) {
           categories = [];
+          gltfLoader.load(`./assets/models/ON-Ottawa-cu-masses.glb`, (gltf) => {
+            this.scene.add(gltf.scene);
+          });
         } else {
           categories = ["roofs", "walls", "slabs", "curtainwalls", "windows"];
         }
         categories.forEach((category: string) => {
           for (const id in objects) {
+            const bb = new Box3();
             let gltfPath = `./assets/models/cdc-glb/ON_Ottawa_CDC_${id}_${category}_allFloors.gltf`;
             gltfLoader.load(gltfPath, (gltf) => {
+              if (category === "walls") {
+                bb.setFromObject(gltf.scene);
+                console.log(id, bb);
+              }
+
               this.scene.add(gltf.scene);
             });
           }
@@ -225,12 +245,12 @@ export const Maplibre: FC<{
         // mapStyle={`./assets/map/${mapStyle}.json`} //Streets
         // mapStyle="./assets/map/satellite.json" //Google Satellite
         mapStyle={`./assets/map/${mapStyle}.json`}
-        terrain={{ source: "terrainSource", exaggeration: 0.1 }}
+        terrain={{ source: "terrainSource", exaggeration: 0.05 }}
       >
         <Source
           id="terrainSource"
           type="raster-dem"
-          url="./assets/terrain/terrain.json"
+          url="./assets/map/terrain.json"
           tileSize={256}
         ></Source>
         {/* {Boolean(osmVisibility) ? <OpenBuildings /> : null} */}
