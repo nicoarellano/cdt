@@ -4,17 +4,12 @@
     "name": "Streets",
     "sources": {
         "openmaptiles": {
-            "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+            "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=q54cDjzBUzfxYseOWe5v",
             "type": "vector"
         },
         "maptiler_attribution": {
             "attribution": "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
             "type": "vector"
-        },
-        "terrainSource": {
-            "type": "raster-dem",
-            "url": "assets/map//terrain.json",
-            "tileSize": 256
         },
         "hillshadeSource": {
             "type": "raster-dem",
@@ -3647,7 +3642,7 @@
                     "type": "identity",
                     "property": "render_min_height"
                 },
-                "fill-extrusion-color": "rgba(189, 185, 181, 1)",
+                "fill-extrusion-color": "rgba(155,155,155,0.9)",
                 "fill-extrusion-height": {
                     "type": "identity",
                     "property": "render_height"
@@ -7344,7 +7339,7 @@
     "metadata": {
         "maptiler:copyright": "This style was generated on MapTiler Cloud. Usage outside of MapTiler Cloud requires valid MapTiler Data Package: https://www.maptiler.com/data/package/ -- please contact us."
     },
-    "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
+    "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=q54cDjzBUzfxYseOWe5v",
     "sprite": "https://api.maptiler.com/maps/streets/sprite",
     "bearing": 0,
     "pitch": 0,

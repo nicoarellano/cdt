@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Mapbox } from "./mapbox";
+// import { Mapbox } from "./mapbox";
 import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -28,11 +28,12 @@ export const Main: FC = () => {
   // Set map style 🗺️
 
   // For Maplibre
-  const [mapStyle, setMapStyle] = useState<string>("streets");
+  const [mapStyle, setMapStyle] = useState<string>("satellite");
   // For Mapbox
   // const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
 
   const updateMapStyle = (mapStyle: string): void => {
+    console.log(mapStyle);
     setMapStyle(mapStyle);
   };
 

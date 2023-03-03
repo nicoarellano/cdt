@@ -15,6 +15,7 @@ import maplibregl from "maplibre-gl";
 
 import mapboxgl, { LngLatLike, MercatorCoordinate } from "mapbox-gl";
 
+import GeocoderControl from "./geocoder-control";
 // import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 // import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
@@ -67,7 +68,7 @@ export const Maplibre: FC<{
       : 45.38435,
   });
 
-  const [, setSearchParams] = useSearchParams();
+  const [, setSearchParams]: any = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
     setViewState(event.viewState);
@@ -83,6 +84,11 @@ export const Maplibre: FC<{
       pitch: currentPitch,
       lat: currentLat,
       lng: currentLng,
+      province: url.searchParams.get("province")
+        ? url.searchParams.get("province")
+        : "",
+      city: url.searchParams.get("city") ? url.searchParams.get("city") : "",
+      place: url.searchParams.get("place") ? url.searchParams.get("place") : "",
     });
   };
 
@@ -216,9 +222,9 @@ export const Maplibre: FC<{
           [-141.1, 41.5],
           [-52, 83.4],
         ]}
-        mapStyle={`./assets/map/${mapStyle}.json`} //Streets
-        // mapStyle="./assets/map/satellite}.json" //Google Satellite
-
+        // mapStyle={`./assets/map/${mapStyle}.json`} //Streets
+        // mapStyle="./assets/map/satellite.json" //Google Satellite
+        mapStyle={`./assets/map/${mapStyle}.json`}
         terrain={{ source: "terrainSource", exaggeration: 0.1 }}
       >
         <Source
@@ -230,10 +236,11 @@ export const Maplibre: FC<{
         {/* {Boolean(osmVisibility) ? <OpenBuildings /> : null} */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
-        {/* <GeocoderControl
+        <GeocoderControl
           mapboxAccessToken={mapboxAccessToken}
           position="top-left"
-        /> */}
+          country="CA"
+        />
       </Map>
     </>
   );
