@@ -13,29 +13,11 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 import maplibregl from "maplibre-gl";
 
-import mapboxgl, { LngLatLike, MercatorCoordinate } from "mapbox-gl";
-
 import GeocoderControl from "./geocoder-control";
 // import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 // import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
 import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
-
-import {
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
-  AmbientLight,
-  Vector3,
-  Matrix4,
-  WebGLRenderer,
-  Group,
-  Box3,
-  AxesHelper,
-} from "three";
-
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { IFCLoader } from "web-ifc-three";
 
 import { Three } from "../utils/three";
 
@@ -73,6 +55,13 @@ export const Maplibre: FC<{
       : 45.38435,
   });
 
+  const places = canada.provinces.ON.cities.Ottawa.places;
+  // const [three, setThree] = useState(Three(places.Carleton_University));
+  const three = Three(places.Carleton_University);
+
+  const [currentPlace, setCurrentPlace]: any = useState(
+    url.searchParams.get("place") ? url.searchParams.get("place") : ""
+  );
   const [, setSearchParams]: any = useSearchParams();
 
   const onMoveChange = (event: ViewStateChangeEvent) => {
@@ -95,11 +84,9 @@ export const Maplibre: FC<{
       city: url.searchParams.get("city") ? url.searchParams.get("city") : "",
       place: url.searchParams.get("place") ? url.searchParams.get("place") : "",
     });
+
+    setCurrentPlace(url.searchParams.get("place"));
   };
-
-  const place = canada.provinces.ON.cities.Ottawa.places.CDC;
-
-  const three: any = Three(place);
 
   return (
     <>
@@ -109,7 +96,7 @@ export const Maplibre: FC<{
         onMove={onMoveChange}
         ref={mapRef}
         onLoad={(map) => {
-          map.target.addLayer(three);
+          if (three) map.target.addLayer(three);
         }}
         maxPitch={60}
         minZoom={3}
@@ -117,8 +104,6 @@ export const Maplibre: FC<{
           [-141.1, 41.5],
           [-52, 83.4],
         ]}
-        // mapStyle={`./assets/map/${mapStyle}.json`} //Streets
-        // mapStyle="./assets/map/satellite.json" //Google Satellite
         mapStyle={`./assets/map/${mapStyle}.json`}
         terrain={{ source: "terrainSource", exaggeration: 0.05 }}
       >

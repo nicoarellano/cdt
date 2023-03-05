@@ -87,8 +87,8 @@ export const Three = (place: any) => {
             let gltfPath = `./assets/models/cdc-glb/ON_Ottawa_CDC_${id}_${category}_allFloors.gltf`;
             gltfLoader.load(gltfPath, (gltf) => {
               if (category === "walls") {
-                bb.setFromObject(gltf.scene);
-                console.log(id);
+                // bb.setFromObject(gltf.scene);
+                // console.log(id);
               }
 
               this.scene.add(gltf.scene);
