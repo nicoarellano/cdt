@@ -92,7 +92,7 @@ export const canada = {
         Ottawa: {
           name: "Ottawa",
           places: {
-            CDC: {
+            Carleton_University: {
               name: "Carleton University",
               bbox: [
                 -75.70137939763889, 45.37885250495145, -75.68921669174163,
