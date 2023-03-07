@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useEffect } from "react";
+import { FC, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { canada } from "../utils/canada";
 
@@ -10,28 +10,22 @@ import Map, {
 } from "react-map-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
-
 import maplibregl from "maplibre-gl";
 
-import GeocoderControl from "./geocoder-control";
-// import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
-// import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
-
-import { UseOpenTorontoMarkers } from "../utils/use-open-toronto-markers";
-
 import { Three } from "../utils/three";
-
-const isMobile: boolean =
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+import { Geocoder } from "../utils/geocoder";
 
 export const Maplibre: FC<{
-  mapboxAccessToken: string | undefined;
   osmVisibility: boolean;
   mapStyle: string;
-}> = ({ mapboxAccessToken, osmVisibility, mapStyle }) => {
+}> = ({ osmVisibility, mapStyle }) => {
   const mapRef: any = useRef();
+
+  const places = canada.provinces.ON.cities.Ottawa.places;
+  // const [three, setThree] = useState(Three(places.Carleton_University));
+  const three = Three(places.Carleton_University);
+
+  const geocoderControl = Geocoder();
 
   // Get shared position
   const currentUrl: string = window.location.href;
@@ -55,11 +49,7 @@ export const Maplibre: FC<{
       : 45.38435,
   });
 
-  const places = canada.provinces.ON.cities.Ottawa.places;
-  // const [three, setThree] = useState(Three(places.Carleton_University));
-  const three = Three(places.Carleton_University);
-
-  const [currentPlace, setCurrentPlace]: any = useState(
+  const [, setPlace]: any = useState(
     url.searchParams.get("place") ? url.searchParams.get("place") : ""
   );
   const [, setSearchParams]: any = useSearchParams();
@@ -85,7 +75,7 @@ export const Maplibre: FC<{
       place: url.searchParams.get("place") ? url.searchParams.get("place") : "",
     });
 
-    setCurrentPlace(url.searchParams.get("place"));
+    setPlace(url.searchParams.get("place"));
   };
 
   return (
@@ -96,6 +86,9 @@ export const Maplibre: FC<{
         onMove={onMoveChange}
         ref={mapRef}
         onLoad={(map) => {
+          if (geocoderControl) {
+            map.target.addControl(geocoderControl);
+          }
           if (three) map.target.addLayer(three);
         }}
         maxPitch={60}
@@ -113,14 +106,8 @@ export const Maplibre: FC<{
           url="./assets/map/terrain.json"
           tileSize={256}
         ></Source>
-        {/* {Boolean(osmVisibility) ? <OpenBuildings /> : null} */}
         <NavigationControl position="bottom-left" visualizePitch={true} />
         <GeolocateControl position="bottom-left" />
-        <GeocoderControl
-          mapboxAccessToken={mapboxAccessToken}
-          position="top-left"
-          country="CA"
-        />
       </Map>
     </>
   );

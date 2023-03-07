@@ -384,11 +384,16 @@ svg:hover {
     justify-content: space-between;
 }
 
-.mapboxgl-ctrl-top-left {
+.maplibregl-ctrl-top-right {
+    margin: 1.1rem 6rem;
+    right: auto !important;
+}
+
+.maplibregl-ctrl-top-left {
     margin: 1.2rem 6rem;
 }
 
-.mapboxgl-control-geocoder {
+.maplibregl-control-geocoder {
     min-width: 200px !important;
     max-width: 50vw !important;
 }

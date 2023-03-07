@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-// import { Mapbox } from "./mapbox";
 import { Maplibre } from "./maplibre";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -8,8 +7,6 @@ import { IcdtLogo } from "./icdt-logo";
 import { RightMenuContainer } from "./right-menu-container";
 import { useUserContext } from "../user-provider";
 import { BrowserRouter as Router } from "react-router-dom";
-
-const token = process.env.REACT_APP_MAPBOX_TOKEN;
 
 export const Main: FC = () => {
   const auth = getAuth();
@@ -23,14 +20,10 @@ export const Main: FC = () => {
         setUser(null);
       }
     });
-  }, []);
+  });
 
   // Set map style 🗺️
-
-  // For Maplibre
   const [mapStyle, setMapStyle] = useState<string>("satellite");
-  // For Mapbox
-  // const [mapStyle, setMapStyle] = useState<string>("satellite-streets-v11");
 
   const updateMapStyle = (mapStyle: string): void => {
     console.log(mapStyle);
@@ -56,11 +49,7 @@ export const Main: FC = () => {
       />
       {Boolean(user) ? (
         <Router>
-          <Maplibre
-            mapboxAccessToken={token}
-            mapStyle={mapStyle}
-            osmVisibility={osmVisibility}
-          />
+          <Maplibre mapStyle={mapStyle} osmVisibility={osmVisibility} />
         </Router>
       ) : (
         <div className="message">

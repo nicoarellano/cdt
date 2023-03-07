@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   PerspectiveCamera,
@@ -8,8 +8,7 @@ import {
   Vector3,
   Matrix4,
   WebGLRenderer,
-  Group,
-  Box3,
+  // Box3,
   AxesHelper,
 } from "three";
 
@@ -83,7 +82,7 @@ export const Three = (place: any) => {
         }
         categories.forEach((category: string) => {
           for (const id in objects) {
-            const bb = new Box3();
+            // const bb = new Box3();
             let gltfPath = `./assets/models/cdc-glb/ON_Ottawa_CDC_${id}_${category}_allFloors.gltf`;
             gltfLoader.load(gltfPath, (gltf) => {
               if (category === "walls") {
